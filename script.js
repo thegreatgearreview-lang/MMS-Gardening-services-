@@ -16,3 +16,16 @@ function addToBasket(i){let basket=JSON.parse(localStorage.getItem('mmsBasket')|
 function buyNow(i){const p=products[i];const text=encodeURIComponent(`Hi MMS Gardening Services, I'd like to buy ${p.name} at ${p.price}. Please let me know how to arrange collection/delivery.`);window.open(`https://wa.me/447989892662?text=${text}`,'_blank')}
 function edit(){rows.innerHTML=nursery.map((x,i)=>`<div class="editor-row"><input data-i="${i}" data-k="name" value="${esc(x.name)}"><input data-i="${i}" data-k="price" value="${esc(x.price)}"><input data-i="${i}" data-k="desc" value="${esc(x.desc)}"><button class="remove" data-r="${i}">Remove</button></div>`).join('')}
 document.getElementById('edit').onclick=()=>{box.hidden=!box.hidden;if(!box.hidden)edit()};document.getElementById('add').onclick=()=>{nursery.push({name:'New nursery item',price:'£0.00',desc:'Add a description here.'});edit()};rows.addEventListener('input',e=>{if(e.target.dataset.i)nursery[e.target.dataset.i][e.target.dataset.k]=e.target.value});rows.addEventListener('click',e=>{if(e.target.dataset.r){nursery.splice(+e.target.dataset.r,1);edit()}});document.getElementById('save').onclick=()=>{localStorage.setItem('mmsNursery',JSON.stringify(nursery));renderCategories();alert('Nursery saved on this device.')};document.getElementById('menu').onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySelector('.links').classList.remove('open'));document.getElementById('year').textContent=new Date().getFullYear();renderCategories();
+
+// MMS About section visual update: friendly, smiling team working together.
+const about=document.querySelector('#about');
+if(about){
+  const photo=about.querySelector('.photo');
+  const heading=about.querySelector('h2');
+  if(photo) photo.style.backgroundImage="url('mms-team.svg')";
+  if(heading) heading.textContent='A local team you can rely on';
+  const first=about.querySelector('p');
+  if(first) first.textContent="At MMS Gardening Services, we're a friendly, hardworking team dedicated to keeping gardens and outdoor spaces looking their best all year round.";
+  const second=about.querySelectorAll('p')[1];
+  if(second) second.textContent="From regular maintenance to one-off projects, we work together with pride and care to deliver a service you can trust.";
+}
