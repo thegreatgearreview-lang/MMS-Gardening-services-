@@ -29,3 +29,24 @@ renderCategories();
   work.querySelectorAll('[data-hedge]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();work.querySelectorAll('.hedge-detail').forEach(d=>d.hidden=true);work.querySelector(`#hedge-${btn.dataset.hedge}-detail`).hidden=false;}));
   const s=document.createElement('style');s.textContent='.mms-job-grid{grid-template-columns:repeat(4,1fr)}.hedge-job-card{cursor:default}.hedge-options{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.hedge-options .btn{margin:0}.hedge-detail{margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,0,0,.12)}.hedge-detail h4{margin:0 0 8px}.hedge-gallery .service-photo{min-height:180px;border-radius:14px}@media(max-width:900px){.mms-job-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.mms-job-grid{grid-template-columns:1fr}}';document.head.appendChild(s);
 })();
+
+// Aquatics master gallery: make the main Aquatics & Water Features card clickable and show all four uploaded master photographs.
+(function addAquaticsGallery(){
+  const aquaticsCard=[...document.querySelectorAll('#services article')].find(card=>card.querySelector('h3')?.textContent.trim()==='Aquatics & Water Features');
+  if(!aquaticsCard)return;
+  aquaticsCard.classList.add('clickable-real-work');
+  aquaticsCard.setAttribute('role','button');
+  aquaticsCard.setAttribute('tabindex','0');
+  const gallery=document.createElement('section');
+  gallery.id='aquatics-gallery';
+  gallery.innerHTML=`<small>AQUATICS & WATER FEATURES</small><h2>Aquatics — Our Work</h2><p class="intro">Real MMS aquatics and water-feature photographs. Click the main service above to see the full selection of our work.</p><div class="grid aquatics-gallery-grid"><article><img class="real-work-photo" src="images/aquatics-1.jpg" alt="MMS aquatics and water features photograph 1"></article><article><img class="real-work-photo" src="images/aquatics-2.jpg" alt="MMS aquatics and water features photograph 2"></article><article><img class="real-work-photo" src="images/aquatics-3.jpg" alt="MMS aquatics and water features photograph 3"></article><article><img class="real-work-photo" src="images/aquatics-4.jpg" alt="MMS aquatics and water features photograph 4"></article></div><a class="btn" href="#contact" data-quote="aquatics">Request an aquatics quote</a>`;
+  const commercial=document.querySelector('#commercial');
+  if(commercial)commercial.parentNode.insertBefore(gallery,commercial);else document.querySelector('main')?.appendChild(gallery);
+  const go=()=>gallery.scrollIntoView({behavior:'smooth',block:'start'});
+  aquaticsCard.addEventListener('click',go);
+  aquaticsCard.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+  const style=document.createElement('style');
+  style.textContent=`#services .clickable-real-work{cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}#services .clickable-real-work:hover,#services .clickable-real-work:focus{transform:translateY(-3px);box-shadow:0 12px 30px rgba(24,48,39,.14);outline:2px solid #245b3a;outline-offset:2px}.aquatics-gallery-grid{grid-template-columns:repeat(2,1fr)}#aquatics-gallery{background:#f6f4ed}@media(max-width:520px){.aquatics-gallery-grid{grid-template-columns:1fr}}`;
+  document.head.appendChild(style);
+  document.querySelectorAll('[data-quote]').forEach(a=>a.addEventListener('click',()=>{if(typeof qt!=='undefined'&&qt&&a.dataset.quote==='aquatics'){qt.value='💧 AQUATICS / POND QUOTE';if(typeof es!=='undefined'&&es)es.value=qt.value+' — MMS Gardening Services';}}));
+})();
