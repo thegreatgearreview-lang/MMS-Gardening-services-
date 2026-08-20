@@ -16,33 +16,14 @@ const about=document.querySelector('#about');if(about){const photo=about.querySe
 const nurseryStyle=document.createElement('style');nurseryStyle.textContent=`.nursery-category-grid{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.nursery-category-grid article{margin:0}.nursery-simple-card{min-height:210px}.nursery-card.logs-card{grid-column:auto;display:flex;align-items:center;gap:16px;padding:14px 16px;min-height:130px;cursor:pointer}.logs-card img{width:105px;height:90px;object-fit:cover;border-radius:12px}.logs-card h3{margin:0 0 6px}.logs-card p{margin:0 0 6px}.logs-click{display:block;font-size:13px;font-weight:700;letter-spacing:.04em;margin-top:4px}.nursery-card-icon{font-size:36px;margin-bottom:10px}.nursery-status{font-size:14px;font-weight:700;letter-spacing:.06em;color:#66856f}.nursery-clearance-card{padding:22px;border-radius:20px;border:2px dashed #a36b3b;background:#fff8ed;display:flex;flex-direction:column;justify-content:center}.clearance-badge{display:inline-block;width:max-content;padding:5px 10px;border-radius:999px;background:#a36b3b;color:white;font-size:12px;font-weight:800;letter-spacing:.12em;margin-bottom:10px}.nursery-clearance-card h3{margin:0 0 8px}.nursery-clearance-card p{margin:0 0 10px}.logs-detail .nursery-images img{width:100%;max-height:420px;object-fit:cover;border-radius:18px}.log-options{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.logs-detail .nursery-product-copy h3{font-size:clamp(28px,4vw,42px)}@media(max-width:600px){.nursery-category-grid{grid-template-columns:1fr}.nursery-card.logs-card{grid-column:auto}.logs-card img{width:100px;height:82px}}`;document.head.appendChild(nurseryStyle);
 renderCategories();
 
-// MMS visual/content corrections: use real garden-work photography, remove duplicate hedge material, restore simple job cards, and correct the nursery bulbs image.
 (function restoreRealPhotosAndSimpleLayout(){
-  const real={
-    maintenance:'https://commons.wikimedia.org/wiki/Special:Redirect/file/StripedLawn.jpg',
-    seasonal:'https://der-kleine-horror-garten.de/wp-content/uploads/2017/11/Garten-winterfest-machen-3-1.jpg',
-    hedge:'https://aimbestmowing.com/_next/image?q=75&url=%2Fhedge-trimming-wide.png&w=3840',
-    office:'https://www.leicester.gov.uk/media/178298/happy_mowing.jpg',
-    bulbs:'https://busybeegardencentre.co.uk/cdn/shop/files/20251119_122931.jpg?v=1763571603&width=1500'
-  };
+  const real={maintenance:'https://commons.wikimedia.org/wiki/Special:Redirect/file/StripedLawn.jpg',seasonal:'https://der-kleine-horror-garten.de/wp-content/uploads/2017/11/Garten-winterfest-machen-3-1.jpg',hedge:'https://aimbestmowing.com/_next/image?q=75&url=%2Fhedge-trimming-wide.png&w=3840',office:'https://www.leicester.gov.uk/media/178298/happy_mowing.jpg',bulbs:'https://busybeegardencentre.co.uk/cdn/shop/files/20251119_122931.jpg?v=1763571603&width=1500',winter:'https://images.openai.com/static-rsc-4/MOBgdR8ntQzFN6t-HFuG25Mcx7irMYjEfGs7KenpXCIB431fn_-vq-W8rXkwSdpMw8tJqg5OwYZ44-GF_bvzFXiOxHSxhG4OGmlb9XS_AkvdtpptZQJ_uGGY2ZJyx2lKZx9_y49fElXyXVLPdKPIP_RPZdRmJlVbSw7n3wW0XJvX7OnZPySGsUYJu2GMMqEK?purpose=fullsize'};
   const setBg=(sel,url)=>document.querySelectorAll(sel).forEach(el=>{el.style.backgroundImage=`url("${url}")`;});
-  setBg('.photo-maintenance',real.maintenance);
-  setBg('.photo-tidy',real.seasonal);
-  setBg('.photo-hedges',real.hedge);
-  setBg('.photo-office',real.office);
+  setBg('.photo-maintenance',real.maintenance);setBg('.photo-tidy',real.seasonal);setBg('.photo-hedges',real.hedge);setBg('.photo-office',real.office);setBg('.photo-winter',real.winter);
   document.querySelectorAll('#nursery .nursery-category .photo-aquatics').forEach(el=>{el.style.backgroundImage=`url("${real.bulbs}")`;el.style.backgroundPosition='center';});
-  const oldHedge=document.querySelector('#hedge-domestic');
-  if(oldHedge) oldHedge.remove();
-  const hedgeLink=document.querySelector('.service-card-link[href="#hedge-work"]');
-  if(hedgeLink){hedgeLink.href='#commercial-services';hedgeLink.style.pointerEvents='auto';}
-  const oldWork=document.querySelector('#mms-our-work');
-  if(oldWork) oldWork.remove();
-  const work=document.createElement('section');
-  work.id='mms-our-work';
-  work.innerHTML=`<small>OUR WORK</small><h2>Real work. Real gardens.</h2><p class="intro">A few examples of the work MMS can provide across Nottingham.</p><div class="grid mms-job-grid"><article><div class="service-photo" style="background-image:url('${real.maintenance}')"></div><h3>Garden Maintenance</h3><p>Regular lawn care and garden upkeep.</p></article><article><div class="service-photo" style="background-image:url('${real.seasonal}')"></div><h3>Seasonal Tidy-Ups</h3><p>Autumn clearance and winter preparation.</p></article><article><div class="service-photo" style="background-image:url('${real.hedge}')"></div><h3>Hedge Work</h3><p>Professional trimming and hedge maintenance.</p></article><article><div class="service-photo" style="background-image:url('${real.office}')"></div><h3>Grounds Maintenance</h3><p>Practical care for larger outdoor spaces.</p></article></div>`;
-  const reviews=document.querySelector('#reviews');
-  if(reviews) reviews.parentNode.insertBefore(work,reviews);
-  const s=document.createElement('style');
-  s.textContent='.mms-job-grid{grid-template-columns:repeat(4,1fr)}@media(max-width:900px){.mms-job-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.mms-job-grid{grid-template-columns:1fr}}';
-  document.head.appendChild(s);
+  const oldHedge=document.querySelector('#hedge-domestic');if(oldHedge)oldHedge.remove();
+  const hedgeLink=document.querySelector('.service-card-link[href="#hedge-work"]');if(hedgeLink){hedgeLink.href='#commercial-services';hedgeLink.style.pointerEvents='auto';}
+  const oldWork=document.querySelector('#mms-our-work');if(oldWork)oldWork.remove();
+  const work=document.createElement('section');work.id='mms-our-work';work.innerHTML=`<small>OUR WORK</small><h2>Real work. Real gardens.</h2><p class="intro">A few examples of the work MMS can provide across Nottingham.</p><div class="grid mms-job-grid"><article><div class="service-photo" style="background-image:url('${real.maintenance}')"></div><h3>Garden Maintenance</h3><p>Regular lawn care and garden upkeep.</p></article><article><div class="service-photo" style="background-image:url('${real.seasonal}')"></div><h3>Seasonal Tidy-Ups</h3><p>Autumn clearance and winter preparation.</p></article><article><div class="service-photo" style="background-image:url('${real.hedge}')"></div><h3>Hedge Work</h3><p>Professional trimming and hedge maintenance.</p></article><article><div class="service-photo" style="background-image:url('${real.office}')"></div><h3>Grounds Maintenance</h3><p>Practical care for larger outdoor spaces.</p></article></div>`;const reviews=document.querySelector('#reviews');if(reviews)reviews.parentNode.insertBefore(work,reviews);
+  const s=document.createElement('style');s.textContent='.mms-job-grid{grid-template-columns:repeat(4,1fr)}@media(max-width:900px){.mms-job-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.mms-job-grid{grid-template-columns:1fr}}';document.head.appendChild(s);
 })();
