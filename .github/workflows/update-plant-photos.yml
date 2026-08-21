@@ -1,0 +1,33 @@
+name: Update MMS plant photos
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update:
+    if: "!contains(github.event.head_commit.message, 'Update MMS plant photos')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace Bulbs & Rhizomes photos
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('script.js')
+          s=p.read_text()
+          replacements={
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/Yellow_Iris_(Iris_pseudacorus)_(10601567776).jpg':'https://www.rootsplants.co.uk/cdn/shop/files/30_bae03265-3630-4e58-b748-aeec2df0f9da.jpg?v=1721169322',
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/Orange_daylily_(Hemerocallis_fulva).jpg':'https://sprouthome.com/cdn/shop/products/HemerCH1_sprout.jpg?v=1743283625&width=1733',
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/Purple_Iris_flower.jpg':'https://groffsplantfarm.com/inventory/thumbnail.php?num=0&plu=3614&v=c2eb804',
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/Crocosmia_Lucifer_A.jpg':'https://mobileimages.lowes.com/productimages/4799b9c1-c38d-4fb1-a684-b2066cec28a6/60004413.jpg?size=pdhism'
+          }
+          for old,new in replacements.items():
+              s=s.replace(old,new)
+          p.write_text(s)
+          PY
+          git config user.name 'MMS Gardening Services'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add script.js
+          git commit -m 'Update MMS plant photos' || exit 0
+          git push
