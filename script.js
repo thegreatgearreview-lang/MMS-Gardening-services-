@@ -3,7 +3,7 @@ const products=[
 {name:'Yellow Pond Iris',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://www.rootsplants.co.uk/cdn/shop/files/30_bae03265-3630-4e58-b748-aeec2df0f9da.jpg?v=1721169322'],desc:'A striking, hardy water-loving perennial with bright yellow flowers.',details:'Full sun or partial shade · Moist to wet soil · Hardy in the UK'},
 {name:'Orange Day Lily',category:'Bulbs & Rhizomes',price:'£3.00 per pot',images:['https://sprouthome.com/cdn/shop/products/HemerCH1_sprout.jpg?v=1743283625&width=1733'],desc:'A cheerful perennial producing warm orange trumpet-shaped flowers.',details:'Sun or partial shade · Well-drained soil · Hardy perennial'},
 {name:'Purple Iris',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://groffsplantfarm.com/inventory/thumbnail.php?num=0&plu=3614&v=c2eb804'],desc:'A beautiful hardy iris with elegant purple flowers.',details:'Full sun or partial shade · Moist but well-drained soil'},
-{name:'Crocosmia Lucifer',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://mobileimages.lowes.com/productimages/4799b9c1-c38d-4fb1-a684-b2066cec28a6/60004413.jpg?size=pdhism'],desc:'A dramatic summer perennial with vivid red flowers.',details:'Full sun or partial shade · Fertile, well-drained soil'},
+{name:'Crocosmia Lucifer',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://saintamourcreation.com/cdn/shop/files/crocosmialucifer_1.jpg?v=1753371514&width=480'],desc:'A dramatic summer perennial with vivid red flowers.',details:'Full sun or partial shade · Fertile, well-drained soil'},
 ];
 const items=document.getElementById('items');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
