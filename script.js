@@ -17,5 +17,21 @@ function showProducts(){const items=getItems();if(!items)return;items.innerHTML=
 function showProduct(i){const items=getItems();if(!items)return;const p=products[i];items.innerHTML=`<div class="nursery-back"><button class="btn" type="button" onclick="showProducts()">← Back to Bulbs & Rhizomes</button></div><article class="nursery-product"><div class="nursery-images">${p.images.map(src=>`<img src="${src}" alt="${esc(p.name)} in a nursery pot in flower" loading="eager">`).join('')}</div><div class="nursery-product-copy"><small>${p.category.toUpperCase()}</small><h3>${p.name}</h3><div class="nursery-price">${p.price}</div><p>${p.desc}</p><p><strong>Growing guide:</strong> ${p.details}</p><button class="btn" type="button" onclick="addToBasket(${i})">Add to basket</button> <button class="btn light" type="button" onclick="buyNow(${i})">Buy now</button></div></article>`)}
 function addToBasket(i){let basket=JSON.parse(localStorage.getItem('mmsBasket')||'[]');basket.push({name:products[i].name,price:products[i].price});localStorage.setItem('mmsBasket',JSON.stringify(basket));alert(`${products[i].name} added to your basket.`)}
 function buyNow(i){const p=products[i];const text=encodeURIComponent(`Hi MMS Gardening Services, I'd like to buy ${p.name} at ${p.price}. Please let me know how to arrange collection/delivery.`);window.open(`https://wa.me/447989892662?text=${text}`,'_blank')}
-function initNursery(){const menu=document.getElementById('menu');if(menu)menu.onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySelector('.links').classList.remove('open'));const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();renderCategories()}
+
+// Garden Maintenance — one portrait image per job, matching the simple scroll-through style discussed.
+const maintenancePhotos=[
+{title:'Mowing',desc:'Regular lawn mowing and keeping grass looking neat.',src:'https://images.pexels.com/photos/6728930/pexels-photo-6728930.jpeg',alt:'Gardener mowing a lawn'},
+{title:'Strimming & Edging',desc:'Strimming grass and keeping lawn and borders neatly defined.',src:'https://images.pexels.com/photos/6363742/pexels-photo-6363742.jpeg',alt:'Gardener using a grass trimmer'},
+{title:'Weeding',desc:'Keeping beds and borders clear and cared for.',src:'https://images.pexels.com/photos/5027619/pexels-photo-5027619.jpeg',alt:'Gardener weeding and trimming plants'},
+{title:'Pruning',desc:'Pruning shrubs and growth to keep the garden tidy.',src:'https://images.pexels.com/photos/34437457/pexels-photo-34437457.jpeg',alt:'Gardener pruning a hedge'},
+{title:'General Garden Upkeep',desc:'Hands-on care to keep the whole garden looking presentable.',src:'https://images.pexels.com/photos/12328926/pexels-photo-12328926.jpeg',alt:'Gardener caring for plants'}
+];
+function addMaintenanceGallery(){
+ const services=document.getElementById('services');
+ if(!services||document.getElementById('garden-maintenance-gallery'))return;
+ const section=document.createElement('section');section.id='garden-maintenance-gallery';section.className='hedge-domestic';
+ section.innerHTML=`<small>GARDEN MAINTENANCE</small><h2>Garden Maintenance — Our Work</h2><p class="intro">One portrait photograph for each type of maintenance work, so customers can simply scroll down through the jobs.</p><div class="maintenance-single-list">${maintenancePhotos.map(p=>`<article class="maintenance-photo-card"><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy"><div><small>MMS GARDEN MAINTENANCE</small><h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p></div></article>`).join('')}</div><a class="btn" href="#contact" data-quote="maintenance">Request a garden maintenance quote</a>`;
+ services.insertAdjacentElement('afterend',section);
+}
+function initNursery(){const menu=document.getElementById('menu');if(menu)menu.onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySelector('.links').classList.remove('open'));const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();renderCategories();addMaintenanceGallery()}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initNursery)}else{initNursery()}
