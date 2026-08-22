@@ -35,8 +35,8 @@ function addMaintenanceGallery(){
 }
 
 const seasonalGroundsPhotos=[
-{title:'Autumn Leaf Clearing',desc:'Seasonal leaf clearing and grounds tidying across outdoor areas.',src:'https://www.gettyimages.com/detail/news-photo/groundskeeper-uses-a-leaf-blower-to-clear-leaves-in-central-news-photo/174513761',alt:'Grounds worker clearing autumn leaves in London'},
-{title:'Autumn Grounds Tidy',desc:'Keeping paths, lawns and communal grounds clean and presentable through autumn.',src:'https://www.wasewerkplaats.be/sites/default/files/2022-07/w_green101019_32.jpg',alt:'Grounds worker raking autumn leaves'},
+{title:'Autumn Leaf Clearing',desc:'Seasonal leaf clearing and grounds tidying across outdoor areas.',src:'https://images.pexels.com/photos/32484038/pexels-photo-32484038.jpeg',alt:'Gardener using a leaf blower in an autumn park'},
+{title:'Winter Snow Clearing',desc:'Winter clearance work to keep paths and outdoor areas safer and accessible.',src:'https://images.pexels.com/photos/6862296/pexels-photo-6862296.jpeg',alt:'Worker in a green jacket clearing snow'},
 {title:'Road Markings',desc:'Ground and external works including road and line-marking support.',src:'https://images.pexels.com/photos/29274527/pexels-photo-29274527.jpeg',alt:'Worker painting white road markings'},
 {title:'Litter Picking',desc:'Keeping commercial and communal outdoor areas clear of litter and debris.',src:'https://www.hhenvironmental.co.uk/cdn/shop/files/Streetmaster-pro-rotating-head-litter-picker-grabber-7.webp?v=1752593849',alt:'Worker litter picking on a UK street'},
 {title:'Window Cleaning',desc:'Light external cleaning and window cleaning for properties and commercial sites.',src:'https://everythingexterior.com/wp-content/uploads/2023/04/window-cleaning-squeegee.jpg',alt:'Professional window cleaner in a bright green shirt'}
