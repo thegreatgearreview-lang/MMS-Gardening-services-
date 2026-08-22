@@ -18,7 +18,6 @@ function showProduct(i){const items=getItems();if(!items)return;const p=products
 function addToBasket(i){let basket=JSON.parse(localStorage.getItem('mmsBasket')||'[]');basket.push({name:products[i].name,price:products[i].price});localStorage.setItem('mmsBasket',JSON.stringify(basket));alert(`${products[i].name} added to your basket.`)}
 function buyNow(i){const p=products[i];const text=encodeURIComponent(`Hi MMS Gardening Services, I'd like to buy ${p.name} at ${p.price}. Please let me know how to arrange collection/delivery.`);window.open(`https://wa.me/447989892662?text=${text}`,'_blank')}
 
-// Garden Maintenance — one portrait image per job, matching the simple scroll-through style discussed.
 const maintenancePhotos=[
 {title:'Mowing',desc:'Regular lawn mowing and keeping grass looking neat.',src:'https://images.pexels.com/photos/6728930/pexels-photo-6728930.jpeg',alt:'Gardener mowing a lawn'},
 {title:'Strimming & Edging',desc:'Strimming grass and keeping lawn and borders neatly defined.',src:'https://images.pexels.com/photos/6363742/pexels-photo-6363742.jpeg',alt:'Gardener using a grass trimmer'},
@@ -29,6 +28,7 @@ const maintenancePhotos=[
 function addMaintenanceGallery(){
  const services=document.getElementById('services');
  if(!services||document.getElementById('garden-maintenance-gallery'))return;
+ const style=document.createElement('style');style.textContent='#garden-maintenance-gallery .maintenance-single-list{display:flex;flex-direction:column;gap:1.5rem;max-width:760px;margin:2rem auto}#garden-maintenance-gallery .maintenance-photo-card{display:flex;flex-direction:column;background:#fff;border:1px solid #d9e6d4;border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.06)}#garden-maintenance-gallery .maintenance-photo-card img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}#garden-maintenance-gallery .maintenance-photo-card>div{padding:1.25rem 1.4rem}';document.head.appendChild(style);
  const section=document.createElement('section');section.id='garden-maintenance-gallery';section.className='hedge-domestic';
  section.innerHTML=`<small>GARDEN MAINTENANCE</small><h2>Garden Maintenance — Our Work</h2><p class="intro">One portrait photograph for each type of maintenance work, so customers can simply scroll down through the jobs.</p><div class="maintenance-single-list">${maintenancePhotos.map(p=>`<article class="maintenance-photo-card"><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy"><div><small>MMS GARDEN MAINTENANCE</small><h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p></div></article>`).join('')}</div><a class="btn" href="#contact" data-quote="maintenance">Request a garden maintenance quote</a>`;
  services.insertAdjacentElement('afterend',section);
