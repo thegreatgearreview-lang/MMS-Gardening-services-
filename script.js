@@ -4,7 +4,7 @@ const products=[
 {name:'Orange Day Lily',category:'Bulbs & Rhizomes',price:'£3.00 per pot',images:['https://sprouthome.com/cdn/shop/products/HemerCH1_sprout.jpg?v=1743283625&width=1733'],desc:'A bright and cheerful perennial producing warm orange trumpet-shaped flowers above strap-like foliage.',details:'Sun or partial shade · Well-drained soil · Hardy perennial · Summer flowering'},
 {name:'Purple Iris',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://groffsplantfarm.com/inventory/thumbnail.php?num=0&plu=3614&v=c2eb804'],desc:'A beautiful hardy iris with elegant purple flowers and sword-shaped foliage.',details:'Full sun or partial shade · Moist but well-drained soil · Hardy perennial'},
 {name:'Crocosmia Lucifer',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://saintamourcreation.com/cdn/shop/files/crocosmialucifer_1.jpg?v=1753371514&width=480'],desc:'A dramatic summer perennial with vivid red flowers, bringing strong colour to garden borders.',details:'Full sun or partial shade · Fertile, well-drained soil · Summer flowering'}];
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=s=>String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
 const logImage='https://www.certainlywood.co.uk/cdn/shop/files/one-Wood-net.jpg?v=1752262134&width=900';
 const roseImage='https://commons.wikimedia.org/wiki/Special:Redirect/file/Rose_garden_flower.jpg';
 const hydrangeaImage='https://commons.wikimedia.org/wiki/Special:Redirect/file/Hydrangea_macrophylla_Blueming.jpg';
@@ -33,5 +33,21 @@ function addMaintenanceGallery(){
  section.innerHTML=`<small>GARDEN MAINTENANCE</small><h2>Garden Maintenance — Our Work</h2><p class="intro">One portrait photograph for each type of maintenance work, so customers can simply scroll down through the jobs.</p><div class="maintenance-single-list">${maintenancePhotos.map(p=>`<article class="maintenance-photo-card"><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy"><div><small>MMS GARDEN MAINTENANCE</small><h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p></div></article>`).join('')}</div><a class="btn" href="#contact" data-quote="maintenance">Request a garden maintenance quote</a>`;
  services.insertAdjacentElement('afterend',section);
 }
-function initNursery(){const menu=document.getElementById('menu');if(menu)menu.onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySelector('.links').classList.remove('open'));const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();renderCategories();addMaintenanceGallery()}
+
+const seasonalGroundsPhotos=[
+{title:'Autumn Leaf Clearing',desc:'Seasonal leaf clearing and grounds tidying across outdoor areas.',src:'https://www.gettyimages.com/detail/news-photo/groundskeeper-uses-a-leaf-blower-to-clear-leaves-in-central-news-photo/174513761',alt:'Grounds worker clearing autumn leaves in London'},
+{title:'Autumn Grounds Tidy',desc:'Keeping paths, lawns and communal grounds clean and presentable through autumn.',src:'https://www.wasewerkplaats.be/sites/default/files/2022-07/w_green101019_32.jpg',alt:'Grounds worker raking autumn leaves'},
+{title:'Road Markings',desc:'Ground and external works including road and line-marking support.',src:'https://images.pexels.com/photos/29274527/pexels-photo-29274527.jpeg',alt:'Worker painting white road markings'},
+{title:'Litter Picking',desc:'Keeping commercial and communal outdoor areas clear of litter and debris.',src:'https://www.hhenvironmental.co.uk/cdn/shop/files/Streetmaster-pro-rotating-head-litter-picker-grabber-7.webp?v=1752593849',alt:'Worker litter picking on a UK street'},
+{title:'Window Cleaning',desc:'Light external cleaning and window cleaning for properties and commercial sites.',src:'https://everythingexterior.com/wp-content/uploads/2023/04/window-cleaning-squeegee.jpg',alt:'Professional window cleaner in a bright green shirt'}
+];
+function addSeasonalGroundsGallery(){
+ const services=document.getElementById('services');
+ if(!services||document.getElementById('seasonal-grounds-gallery'))return;
+ const style=document.createElement('style');style.textContent='#seasonal-grounds-gallery .seasonal-single-list{display:flex;flex-direction:column;gap:1.5rem;max-width:760px;margin:2rem auto}#seasonal-grounds-gallery .seasonal-photo-card{display:flex;flex-direction:column;background:#fff;border:1px solid #d9e6d4;border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.06)}#seasonal-grounds-gallery .seasonal-photo-card img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}#seasonal-grounds-gallery .seasonal-photo-card>div{padding:1.25rem 1.4rem}';document.head.appendChild(style);
+ const section=document.createElement('section');section.id='seasonal-grounds-gallery';section.className='hedge-domestic';
+ section.innerHTML=`<small>WINTER & GROUNDS WORK</small><h2>Seasonal Grounds & External Work</h2><p class="intro">Autumn and winter work, external cleaning and grounds services — one portrait photograph per job.</p><div class="seasonal-single-list">${seasonalGroundsPhotos.map(p=>`<article class="seasonal-photo-card"><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy"><div><small>MMS SEASONAL GROUNDS WORK</small><h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p></div></article>`).join('')}</div><a class="btn" href="#contact" data-quote="seasonal">Request seasonal grounds work</a>`;
+ services.insertAdjacentElement('afterend',section);
+}
+function initNursery(){const menu=document.getElementById('menu');if(menu)menu.onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySelector('.links').classList.remove('open'));const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();renderCategories();addMaintenanceGallery();addSeasonalGroundsGallery()}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initNursery)}else{initNursery()}
