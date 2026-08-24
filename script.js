@@ -27,3 +27,13 @@ window.addEventListener('storage',updateBasketCount);if(document.readyState==='l
 
 // Desktop/browser-only header spacing. Mobile/app layout remains unchanged.
 if(window.innerWidth>800){const s=document.createElement('style');s.textContent='@media (min-width:801px){nav{height:102px}.links{margin-top:29px}.header-location{margin-top:9px}}';document.head.appendChild(s)}
+
+// Keep the homepage clean: the nursery now lives on its own dedicated page.
+function setupDedicatedNurseryCard(){
+  const section=document.getElementById('nursery');
+  if(section && location.pathname.endsWith('index.html') || section && location.pathname.endsWith('/')){
+    section.innerHTML='<small>GROWING & TRADING</small><h2>The Nursery</h2><p class="intro">Plants, shrubs and garden products from MMS — with our nursery shop, galleries and future online buying all in one place.</p><a class="service-card-link nursery-home-card" href="nursery.html"><article><div class="service-photo nursery-card-photo"></div><h3>🌱 Visit the MMS Nursery</h3><p>Browse our nursery, view available plants and products, and keep an eye out for new stock as it is added.</p><span class="btn">Enter the Nursery</span></article></a>';
+  }
+  document.querySelectorAll('.links a').forEach(a=>{if(a.textContent.trim()==='The Nursery')a.href='nursery.html'});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupDedicatedNurseryCard);else setupDedicatedNurseryCard();
