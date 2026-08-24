@@ -20,7 +20,18 @@ function checkoutBasket(){const basket=JSON.parse(localStorage.getItem('mmsBaske
 function buyNow(i){const p=products[i];const text=encodeURIComponent(`Hi MMS Gardening Services, I'd like to buy ${p.name} at ${p.price}. Please let me know collection/delivery and payment options.`);window.open(`https://wa.me/447989892662?text=${text}`,'_blank')}
 function makeMaintenanceCardClickable(){const card=[...document.querySelectorAll('#services article')].find(c=>c.querySelector('h3')?.textContent.trim()==='Garden Maintenance');if(card){let link=card.closest('a');if(!link){link=document.createElement('a');link.className='service-card-link';card.replaceWith(link);link.appendChild(card)}link.href='garden-maintenance.html'}}
 function makeCarParkCardClickable(){const card=[...document.querySelectorAll('#commercial-services article')].find(c=>c.querySelector('h3')?.textContent.trim()==='Car Parks & Communal Areas');if(card){let link=card.closest('a');if(!link){link=document.createElement('a');link.className='service-card-link';card.replaceWith(link);link.appendChild(card)}link.href='car-parks-communal-areas.html';card.style.cursor='pointer'}}
-function initNursery(){const menu=document.getElementById('menu');if(menu)menu.onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a:not(.basket-menu)').forEach(a=>a.onclick=()=>closeMobileMenu());renderCategories();makeMaintenanceCardClickable();makeCarParkCardClickable();updateBasketCount();
+function addNurseryCardPictures(){
+  const cards=document.querySelectorAll('#nursery-categories > a');
+  const pictures=[
+    ['https://sprouthome.com/cdn/shop/products/HemerCH1_sprout.jpg?v=1743283625&width=1733','Day lilies, iris and crocosmia'],
+    ['https://commons.wikimedia.org/wiki/Special:Redirect/file/Rose_garden_flower.jpg','Garden roses'],
+    ['https://commons.wikimedia.org/wiki/Special:Redirect/file/Hydrangea_macrophylla_Blueming.jpg','Hydrangeas'],
+    ['https://www.certainlywood.co.uk/cdn/shop/files/one-Wood-net.jpg?v=1752262134&width=900','Netted logs'],
+    ['https://commons.wikimedia.org/wiki/Special:Redirect/file/Outdoor_plants_and_pots_-_357608.jpg','Nursery clearance plants']
+  ];
+  cards.forEach((link,i)=>{const card=link.querySelector('article');if(!card||!pictures[i])return;card.style.backgroundImage=`linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,45,25,.88)),url("${pictures[i][0]}")`;card.style.backgroundSize='cover';card.style.backgroundPosition='center';card.style.minHeight='280px';card.style.display='flex';card.style.flexDirection='column';card.style.justifyContent='flex-end';card.style.padding='28px';card.style.color='#fff';card.querySelectorAll('h2,p').forEach(el=>el.style.color='#fff');if(!card.querySelector('.card-range')){const b=document.createElement('span');b.className='btn card-range';b.textContent='View Range →';b.style.alignSelf='flex-start';card.appendChild(b)}});
+}
+function initNursery(){const menu=document.getElementById('menu');if(menu)menu.onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a:not(.basket-menu)').forEach(a=>a.onclick=()=>closeMobileMenu());renderCategories();makeMaintenanceCardClickable();makeCarParkCardClickable();updateBasketCount();addNurseryCardPictures();
   if(window.innerWidth>800){const label=document.querySelector('.header-services');if(label)label.innerHTML='Gardening Services<br><span style="font-size:11px;letter-spacing:.08em;font-weight:800">Grounds Maintenance</span>'}
 }
 window.addEventListener('storage',updateBasketCount);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initNursery);else initNursery();
