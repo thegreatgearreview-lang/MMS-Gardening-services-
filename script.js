@@ -1,62 +1,43 @@
-// MMS Gardening Services — nursery shop
-const products=[
-{name:'Orange Day Lily',category:'Bulbs & Rhizomes',price:'£3.00 per pot',images:['https://sprouthome.com/cdn/shop/products/HemerCH1_sprout.jpg?v=1743283625&width=1733'],desc:'A bright and cheerful perennial producing warm orange trumpet-shaped flowers above strap-like foliage.',details:'Sun or partial shade · Well-drained soil · Hardy perennial · Summer flowering'},
-{name:'Purple Iris',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://groffsplantfarm.com/inventory/thumbnail.php?num=0&plu=3614&v=c2eb804'],desc:'A beautiful hardy iris with elegant purple flowers and sword-shaped foliage.',details:'Full sun or partial shade · Moist but well-drained soil · Hardy perennial'},
-{name:'Crocosmia Lucifer',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://saintamourcreation.com/cdn/shop/files/crocosmialucifer_1.jpg?v=1753371514&width=480'],desc:'A dramatic summer perennial with vivid red flowers, bringing strong colour to garden borders.',details:'Full sun or partial shade · Fertile, well-drained soil · Summer flowering'},
-{name:'Yellow Pond Iris',category:'Bulbs & Rhizomes',price:'£5.00 per pot',images:['https://www.rootsplants.co.uk/cdn/shop/files/30_bae03265-3630-4e58-b748-aeec2df0f9da.jpg?v=1721169322'],desc:'A striking, hardy water-loving perennial with bright yellow flowers. Ideal for pond margins and reliably moist areas.',details:'Full sun or partial shade · Moist to wet soil · Hardy in the UK · Flowers in late spring and summer'},
-{name:'Garden Roses',category:'Roses',price:'From £10.00',images:['https://commons.wikimedia.org/wiki/Special:Redirect/file/Rose_garden_flower.jpg'],desc:'Garden roses for borders, beds and containers.',details:'Full sun preferred · Feed during growing season'},
-{name:'Netted Logs',category:'Netted Logs',price:'From £5.00',images:['https://www.certainlywood.co.uk/cdn/shop/files/one-Wood-net.jpg?v=1752262134&width=900'],desc:'Quality netted firewood, dry stored for two years.',details:'Collection or local delivery can be arranged'},
-{name:'Garden Shrubs',category:'Shrubs',price:'From £8.00',images:['https://www.housedigest.com/img/gallery/the-native-shrub-that-provides-color-changing-berries-from-summer-into-fall/intro-1715798616.jpg'],desc:'A selection of shrubs suitable for borders, beds and containers.',details:'Planting advice available · Varieties subject to stock'}];
-const esc=s=>String(s).replace(/[&<>\\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\\"':'&quot;',"'":'&#39;'}[c]));
-function getItems(){return document.getElementById('items')}
-function updateBasketCount(){const b=JSON.parse(localStorage.getItem('mmsBasket')||'[]');const n=b.length;const e=document.getElementById('basket-count');if(e)e.textContent=n;let badge=document.getElementById('basket-notification');const menu=document.getElementById('menu');if(menu){if(!badge){badge=document.createElement('span');badge.id='basket-notification';badge.setAttribute('aria-label','Basket item count');menu.appendChild(badge)}badge.textContent=n;badge.style.cssText='display:'+(n?'inline-flex':'none')+';position:absolute;top:10px;right:-3px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#c62828;color:#fff;font:900 11px/20px Arial,sans-serif;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 7px rgba(0,0,0,.18);z-index:2';}}
-function closeMobileMenu(){const l=document.querySelector('.links');if(l)l.classList.remove('open')}
-function renderCategories(){const items=getItems();if(!items)return;const cats=[{name:'Bulbs & Rhizomes',products:[0,1,2,3]},{name:'Roses',products:[4]},{name:'Netted Logs',products:[5]},{name:'Shrubs',products:[6]}];window.nurseryCats=cats;items.innerHTML=`<div class="nursery-category-grid">${cats.map((c,i)=>{const p=products[c.products[0]];return `<article class="nursery-category"><div class="service-photo" style="background-image:url('${p.images[0]}');background-size:cover;background-position:center"></div><h3>${esc(c.name)}</h3><p>${c.name==='Bulbs & Rhizomes'?'Day Lilies, Iris, Crocosmia and Yellow Pond Iris — each with its own picture and price.':esc(p.desc)}</p><strong class="nursery-price">${c.name==='Bulbs & Rhizomes'?'From £3.00':esc(p.price)}</strong><br><button class="btn" type="button" onclick="showCategory(${i})">View Gallery & Buy</button></article>`}).join('')}</div><div class="nursery-basket"><button class="btn" type="button" onclick="window.location.href='basket.html'">🛒 View Basket</button></div>`}
-function showCategory(i){const items=getItems(),c=window.nurseryCats[i];if(!items)return;items.innerHTML=`<div class="nursery-back"><button class="btn" type="button" onclick="renderCategories()">← Back to nursery</button></div><small>NURSERY</small><h3>${esc(c.name)}</h3><p class="intro">Browse the gallery, pictures and prices, then choose what you want to buy.</p><div class="grid">${c.products.map(n=>{const p=products[n];return `<article class="nursery-category"><div class="service-photo" style="background-image:url('${p.images[0]}');background-size:cover;background-position:center"></div><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><strong class="nursery-price">${esc(p.price)}</strong><p><small>${esc(p.details)}</small></p><button class="btn" type="button" onclick="addToBasket(${n})">Add to basket</button></article>`}).join('')}</div><p><button class="btn" type="button" onclick="window.location.href='basket.html'">🛒 View Basket</button></p>`}
-function addToBasket(i){let basket=JSON.parse(localStorage.getItem('mmsBasket')||'[]');basket.push({name:products[i].name,price:products[i].price,category:products[i].category});localStorage.setItem('mmsBasket',JSON.stringify(basket));updateBasketCount();window.location.href='basket.html'}
-function showBasket(){window.location.href='basket.html'}
-function removeBasketItem(i){let basket=JSON.parse(localStorage.getItem('mmsBasket')||'[]');basket.splice(i,1);localStorage.setItem('mmsBasket',JSON.stringify(basket));updateBasketCount();window.location.href='basket.html'}
-function checkoutBasket(){window.location.href='basket.html'}
-function buyNow(i){const p=products[i];const text=encodeURIComponent(`Hi MMS Gardening Services, I'd like to buy ${p.name} at ${p.price}. Please let me know collection/delivery and payment options.`);window.open(`https://wa.me/447989892662?text=${text}`,'_blank')}
-function makeMaintenanceCardClickable(){const card=[...document.querySelectorAll('#services article')].find(c=>c.querySelector('h3')?.textContent.trim()==='Garden Maintenance');if(card){let link=card.closest('a');if(!link){link=document.createElement('a');link.className='service-card-link';card.replaceWith(link);link.appendChild(card)}link.href='garden-maintenance.html'}}
-function makeCarParkCardClickable(){const card=[...document.querySelectorAll('#commercial-services article')].find(c=>c.querySelector('h3')?.textContent.trim()==='Car Parks & Communal Areas');if(card){let link=card.closest('a');if(!link){link=document.createElement('a');card.replaceWith(link);link.appendChild(card)}link.href='car-parks-communal-areas.html';card.style.cursor='pointer'}}
-function addNurseryCardPictures(){const cards=document.querySelectorAll('#nursery-categories > a');const pictures=[['https://sprouthome.com/cdn/shop/products/HemerCH1_sprout.jpg?v=1743283625&width=1733','Day lilies, iris and crocosmia'],['https://commons.wikimedia.org/wiki/Special:Redirect/file/Rose_garden_flower.jpg','Garden roses'],['https://commons.wikimedia.org/wiki/Special:Redirect/file/Hydrangea_macrophylla_Blueming.jpg','Shrubs'],['https://www.certainlywood.co.uk/cdn/shop/files/one-Wood-net.jpg?v=1752262134&width=900','Netted logs'],['https://commons.wikimedia.org/wiki/Special:Redirect/file/Outdoor_plants_and_pots_-_357608.jpg','Nursery clearance plants']];cards.forEach((link,i)=>{const card=link.querySelector('article');if(!card||!pictures[i])return;card.style.backgroundImage=`linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,45,25,.88)),url(\"${pictures[i][0]}\")`;card.style.backgroundSize='cover';card.style.backgroundPosition='center';card.style.minHeight='280px';card.style.display='flex';card.style.flexDirection='column';card.style.justifyContent='flex-end';card.style.padding='28px';card.style.color='#fff';card.querySelectorAll('h2,p').forEach(el=>el.style.color='#fff');if(!card.querySelector('.card-range')){const b=document.createElement('span');b.className='btn card-range';b.textContent='View Range →';b.style.alignSelf='flex-start';card.appendChild(b)}})}
-function initNursery(){const menu=document.getElementById('menu');if(menu)menu.onclick=()=>document.querySelector('.links').classList.toggle('open');document.querySelectorAll('.links a:not(.basket-menu)').forEach(a=>a.onclick=()=>closeMobileMenu());renderCategories();makeMaintenanceCardClickable();makeCarParkCardClickable();updateBasketCount();addNurseryCardPictures();if(window.innerWidth>800){const label=document.querySelector('.header-services');if(label)label.innerHTML='Gardening Services<br><span style=\"font-size:11px;letter-spacing:.08em;font-weight:800\">Grounds Maintenance</span>'}}
-window.addEventListener('storage',updateBasketCount);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initNursery);else initNursery();
-if(window.innerWidth>800){const s=document.createElement('style');s.textContent='@media (min-width:801px){nav{height:102px}.links{margin-top:29px}.header-location{margin-top:9px}}';document.head.appendChild(s)}
-function setupDedicatedNurseryCard(){const section=document.getElementById('nursery');if(section && (location.pathname.endsWith('index.html') || location.pathname.endsWith('/'))){section.innerHTML='<small>THE MMS NURSERY</small><h2>Plants, shrubs & garden stock</h2><p class=\"intro\">Visit the MMS Nursery for plants, shrubs and garden products. Browse our available stock, see what is new, and use the nursery page to explore our ranges.</p><a class=\"service-card-link nursery-home-card\" href=\"nursery.html\"><article><div class=\"service-photo nursery-card-photo\"></div><div class=\"nursery-home-copy\"><h3>🌱 Visit the MMS Nursery</h3><p>Browse our nursery, view available plants and products, and keep an eye out for new stock as it is added.</p><span class=\"btn\">Enter the Nursery</span></div></article></a><p class=\"nursery-home-trade\"><strong>Trade &amp; Nursery Enquiries</strong><br>For nurseries, growers and plant suppliers interested in trading, swapping surplus stock or sourcing specific plants, <a href=\"nursery.html#trade-enquiries\">send a trade enquiry here</a>.</p>'}document.querySelectorAll('.links a').forEach(a=>{if(a.textContent.trim()==='The Nursery')a.href='nursery.html';if(a.classList.contains('basket-menu')){a.href='basket.html';a.onclick=null}});if(!document.getElementById('nursery-home-style')){const s=document.createElement('style');s.id='nursery-home-style';s.textContent=`#nursery{padding:80px 0!important;background-image:url('https://i2.wp.com/farm7.static.flickr.com/6134/5939914617_8ba9169aa4_b.jpg')!important;background-size:cover!important;background-position:center!important;text-align:center}#nursery>small{display:block}#nursery h2{margin:10px 0 14px}#nursery .intro{max-width:700px;margin:0 auto 28px;color:#fff!important;font-size:18px}#nursery .nursery-home-card{display:block;max-width:820px;margin:0 auto;text-decoration:none;text-align:left}#nursery .nursery-home-card article{background:rgba(255,255,255,.96);border-radius:22px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.16);padding:0}#nursery .nursery-card-photo{height:330px;background-image:url('https://i2.wp.com/farm7.static.flickr.com/6134/5939914617_8ba9169aa4_b.jpg')!important;background-size:cover;background-position:center}#nursery .nursery-home-copy{padding:24px 28px 28px}#nursery .nursery-home-copy h3{margin:0 0 8px;font-size:27px;color:#183027}#nursery .nursery-home-copy p{margin:0;color:#62736b;max-width:650px}#nursery .nursery-home-trade{max-width:820px;margin:24px auto 0;padding:18px 22px;background:rgba(255,255,255,.94);border-radius:15px;text-align:left;color:#183027}#nursery .nursery-home-trade a{color:#245b3a;font-weight:800}@media(max-width:800px){#nursery{padding:65px 0!important}#nursery .intro{font-size:16px;padding:0 4%}#nursery .nursery-home-card{max-width:92%}#nursery .nursery-card-photo{height:240px}#nursery .nursery-home-copy{padding:20px}#nursery .nursery-home-copy h3{font-size:23px}#nursery .nursery-home-trade{max-width:92%}}`;document.head.appendChild(s)}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupDedicatedNurseryCard);else setupDedicatedNurseryCard();
-// FINAL: clearer main-page Nursery entry card. Only this card is changed.
-function applyNurseryEntryCardDesign(){const card=document.querySelector('#nursery .nursery-home-card');if(!card)return;card.innerHTML='<article class="nursery-entry-card"><div class="nursery-entry-photo"></div><div class="nursery-entry-panel"><div class="nursery-entry-icon">🌱</div><div class="nursery-entry-copy"><h3>Visit the MMS Nursery</h3><p>Browse our nursery, view available plants and products, and keep an eye out for new stock as it is added.</p></div><span class="nursery-entry-button">Enter the Nursery <span>→</span></span></div></article>';card.style.cssText='display:block;max-width:820px;margin:28px auto 0;text-decoration:none;text-align:left';if(!document.getElementById('nursery-entry-final-style')){const s=document.createElement('style');s.id='nursery-entry-final-style';s.textContent=`#nursery .nursery-entry-card{padding:0!important;overflow:hidden;border-radius:28px;background:#174d35;box-shadow:0 14px 34px rgba(24,48,39,.18);border:1px solid #dce3dc}#nursery .nursery-entry-photo{height:330px;background-image:url('https://www.ripleynurseries.co.uk/files/images/photo-albums/album_2_cbc9312e0e_n.jpg');background-size:cover;background-position:center}#nursery .nursery-entry-panel{position:relative;display:grid;grid-template-columns:105px 1fr;column-gap:24px;align-items:center;padding:30px 32px 96px;background:#174d35;color:#fff}#nursery .nursery-entry-icon{width:82px;height:82px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:38px;align-self:start}#nursery .nursery-entry-copy h3{margin:0 0 10px;color:#fff;font-size:30px;font-weight:800}#nursery .nursery-entry-copy p{margin:0;color:#fff;max-width:620px;font-size:17px;line-height:1.55}#nursery .nursery-entry-button{position:absolute;left:32px;right:32px;bottom:22px;display:block;padding:15px 26px;border-radius:999px;background:#76a94c;color:#fff;text-align:center;font-size:18px;font-weight:800}#nursery .nursery-entry-button span{font-size:24px;margin-left:8px;vertical-align:-1px}@media(max-width:800px){#nursery .nursery-home-card{max-width:92%!important}#nursery .nursery-entry-photo{height:245px}#nursery .nursery-entry-panel{grid-template-columns:78px 1fr;column-gap:16px;padding:24px 20px 88px}#nursery .nursery-entry-icon{width:64px;height:64px;font-size:29px}#nursery .nursery-entry-copy h3{font-size:24px}#nursery .nursery-entry-copy p{font-size:16px}#nursery .nursery-entry-button{left:20px;right:20px;bottom:18px;padding:14px 18px;font-size:17px}}`;document.head.appendChild(s)}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyNurseryEntryCardDesign);else applyNurseryEntryCardDesign();
+// MMS Gardening Services
+// Main-page card loader: each service card can be maintained independently.
+// Nursery is included here so main-cards/nursery.html controls ONLY the main-page card.
 
-// MAIN PAGE: load each service card from its own file. Nursery is deliberately excluded.
 async function loadIndependentMainCards(){
-  if(!(location.pathname.endsWith('index.html')||location.pathname.endsWith('/')))return;
-  const domestic=document.querySelector('#services .grid');
-  const commercial=document.querySelector('#commercial-services .commercial-grid');
-  const loads=[
-    [domestic,'garden-maintenance','garden-maintenance.html'],
-    [domestic,'planting-borders','planting-borders.html'],
-    [domestic,'seasonal-tidy-ups','seasonal-tidy-ups.html'],
-    [domestic,'hedge-work','hedge-work.html'],
-    [domestic,'lawn-care','lawn-care.html'],
-    [domestic,'snow-clearing-salt-spreading','snow-clearing-salt-spreading.html'],
-    [domestic,'aquatics-water-features','aquatics-water-features.html'],
-    [commercial,'office-business-grounds','office-business-grounds.html'],
-    [commercial,'industrial-sites','industrial-sites.html'],
-    [commercial,'car-parks-communal-areas','car-parks-communal-areas.html'],
-    [commercial,'autumn-winter-grounds-work','autumn-winter-grounds-work.html']
-  ];
-  for(const [container,id,file] of loads){
-    if(!container)continue;
+  if(!(location.pathname.endsWith('index.html') || location.pathname.endsWith('/'))) return;
+
+  const map={
+    maintenance:'main-cards/maintenance.html',
+    planting:'main-cards/planting.html',
+    tidy:'main-cards/tidy.html',
+    hedges:'main-cards/hedges.html',
+    lawn:'main-cards/lawn.html',
+    winter:'main-cards/winter.html',
+    aquatics:'main-cards/aquatics.html',
+    office:'main-cards/office.html',
+    industrial:'main-cards/industrial.html',
+    carpark:'main-cards/carpark.html',
+    seasonal:'main-cards/seasonal.html',
+    nursery:'main-cards/nursery.html'
+  };
+
+  for(const [id,file] of Object.entries(map)){
+    const section=document.getElementById(id) || document.querySelector(`[data-card-id="${id}"]`);
+    if(!section) continue;
     try{
-      const r=await fetch(`main-cards/${file}`,{cache:'no-store'}); if(!r.ok)continue;
-      const html=await r.text(); const t=document.createElement('template'); t.innerHTML=html.trim(); const replacement=t.content.firstElementChild; if(!replacement)continue;
-      replacement.dataset.mainCard=id;
-      const old=[...container.children].find(el=>el.querySelector('h3')?.textContent.toLowerCase().includes(id.replaceAll('-',' '))||el.dataset.mainCard===id);
-      if(old)old.replaceWith(replacement); else container.appendChild(replacement);
-    }catch(e){console.warn('MMS card load failed:',file,e)}
+      const res=await fetch(file,{cache:'no-store'});
+      if(!res.ok) continue;
+      const html=await res.text();
+      const holder=document.createElement('div');
+      holder.innerHTML=html;
+      const card=holder.querySelector('article,.service-card-link,[data-card]') || holder.firstElementChild;
+      if(!card) continue;
+      section.innerHTML='';
+      section.appendChild(card);
+    }catch(e){
+      console.warn('Could not load independent card:',id,e);
+    }
   }
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadIndependentMainCards);else loadIndependentMainCards();
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',loadIndependentMainCards);
+else loadIndependentMainCards();
