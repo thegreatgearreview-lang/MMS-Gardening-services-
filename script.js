@@ -21,30 +21,3 @@ function initSite(){const menu=document.getElementById('menu');if(menu)menu.oncl
 function setupDedicatedNurseryCard(){const section=document.getElementById('nursery');if(!section||(!(location.pathname.endsWith('index.html')||location.pathname.endsWith('/'))))return;section.innerHTML='<a class="service-card-link nursery-home-card" href="nursery.html"><article><div class="service-photo nursery-card-photo"></div><div class="nursery-home-copy"><h3>MMS Nursery</h3><p>Plants, shrubs and garden products available from our nursery.</p><span class="btn">Enter the Nursery →</span></div></article></a>';if(!document.getElementById('nursery-home-style')){const s=document.createElement('style');s.id='nursery-home-style';s.textContent=`#nursery{padding:55px 0!important;background:var(--green)!important;text-align:center}#nursery .nursery-home-card{display:block;max-width:820px;margin:0 auto;text-decoration:none;text-align:left}#nursery .nursery-home-card article{background:var(--green);border:0;border-radius:22px;overflow:hidden;box-shadow:none;padding:0}#nursery .nursery-card-photo{height:330px;background-image:url('https://images.squarespace-cdn.com/content/v1/5f7f29171881a026d6b17bd4/1696346849272-8BC728XFF1HMS05CWF4O/Hertfordshire-garden-centre-harpenden-hertfordshire-flowers-plants.jpg')!important;background-size:cover;background-position:center}#nursery .nursery-home-copy{padding:24px 28px 28px;background:var(--green);color:#fff}#nursery .nursery-home-copy h3{margin:0 0 8px;font-size:27px;color:#fff}#nursery .nursery-home-copy p{margin:0;color:#fff;max-width:650px}#nursery .nursery-home-copy .btn{background:#fff!important;color:var(--green)!important;margin-top:18px}#nursery .nursery-home-card:hover{transform:translateY(-1px)}@media(max-width:800px){#nursery{padding:45px 0!important}#nursery .nursery-home-card{max-width:92%}#nursery .nursery-card-photo{height:240px}#nursery .nursery-home-copy{padding:20px}#nursery .nursery-home-copy h3{font-size:23px}}`;document.head.appendChild(s)}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{initSite();setupDedicatedNurseryCard()});else{initSite();setupDedicatedNurseryCard()}
 window.addEventListener('storage',updateBasketCount);
-
-// Main-page cards: the card files are the source of truth. Keep the Nursery card above untouched.
-(function(){
-  if(!(location.pathname.endsWith('index.html')||location.pathname.endsWith('/')))return;
-  const groups={
-    '#services .grid':['garden-maintenance.html','planting-borders.html','seasonal-tidy-ups.html','hedge-work.html','lawn-care.html','snow-clearing-salt-spreading.html','aquatics-water-features.html'],
-    '#commercial-services .commercial-grid':['office-business-grounds.html','industrial-sites.html','car-parks-communal-areas.html','autumn-winter-grounds-work.html']
-  };
-  async function load(){
-    for(const [selector,files] of Object.entries(groups)){
-      const grid=document.querySelector(selector); if(!grid)continue;
-      for(const file of files){
-        try{
-          const r=await fetch('./main-cards/'+file+'?v=20260829',{cache:'no-store'});
-          if(!r.ok)continue;
-          const holder=document.createElement('div'); holder.innerHTML=(await r.text()).trim();
-          const card=holder.querySelector('article[data-main-card]'); if(!card)continue;
-          const key=file.replace('.html',''); card.dataset.mainCard=key;
-          const existing=[...grid.children].find(el=>el.dataset.mainCard===key||el.querySelector?.('[data-main-card="'+key+'"]')||el.querySelector?.('h3')?.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-')===key);
-          const link=card.closest('a'); if(link){link.className='service-card-link';const href=link.getAttribute('href');if(href)link.href=href.replace(/^\.\.\//,'');}
-          if(existing)existing.replaceWith(link||card);else grid.appendChild(link||card);
-        }catch(e){console.warn('MMS main card load failed',file,e)}
-      }
-    }
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else load();
-})();
