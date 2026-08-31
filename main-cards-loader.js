@@ -1,80 +1,11 @@
 // MMS main-page card loader
-// Each card is an independent file under /main-cards/.
-// The loader never uses one card's HTML, image or link to build another card.
 (function(){
-  const domestic = [
-    ['Garden Maintenance','garden-maintenance.html'],
-    ['Planting & Borders','planting-borders.html'],
-    ['Seasonal Tidy-Ups','seasonal-tidy-ups.html'],
-    ['Hedge Work — One of Our Specialities','hedge-work.html'],
-    ['Lawn Care','lawn-care.html'],
-    ['Snow Clearing & Salt Spreading','snow-clearing-salt-spreading.html'],
-    ['Aquatics & Water Features','aquatics-water-features.html']
-  ];
-  const commercial = [
-    ['Office & Business Grounds','office-business-grounds.html'],
-    ['Industrial Sites','industrial-sites.html'],
-    ['Car Parks & Communal Areas','car-parks-communal-areas.html'],
-    ['Autumn & Winter Grounds Work','autumn-winter-grounds-work.html']
-  ];
-
-  async function getCard(file){
-    const r=await fetch('./main-cards/'+file+'?v=independent-20260831',{cache:'no-store'});
-    if(!r.ok)throw new Error('Card file unavailable: '+file);
-    const holder=document.createElement('div');
-    holder.innerHTML=(await r.text()).trim();
-    const article=holder.querySelector('article[data-main-card]');
-    if(!article)throw new Error('Invalid card file: '+file);
-    const link=article.closest('a');
-    if(link){
-      link.className='service-card-link';
-      const target=link.getAttribute('href');
-      if(target)link.href=target.replace(/^\.\.\//,'');
-      link.innerHTML=article.outerHTML;
-      return link;
-    }
-    return article;
-  }
-
-  function findExisting(grid,title,key){
-    return [...grid.children].find(el=>
-      el.matches('[data-main-card="'+key+'"], .service-card-link:has([data-main-card="'+key+'"])') ||
-      el.querySelector?.('[data-main-card="'+key+'"]') ||
-      el.querySelector?.('h3')?.textContent.trim()===title
-    );
-  }
-
-  async function loadCards(sectionSelector,items){
-    const section=document.querySelector(sectionSelector); if(!section)return;
-    const grid=section.querySelector('.grid, .commercial-grid'); if(!grid)return;
-    for(const [title,file] of items){
-      const key=file.replace(/\.html$/,'');
-      try{
-        const newCard=await getCard(file);
-        const existing=findExisting(grid,title,key);
-        if(existing) existing.replaceWith(newCard);
-        else grid.appendChild(newCard);
-      }catch(e){console.warn('MMS independent card could not be loaded:',file,e)}
-    }
-  }
-
-  function addStyle(){
-    if(document.getElementById('mms-independent-card-style'))return;
-    const s=document.createElement('style');
-    s.id='mms-independent-card-style';
-    s.textContent='.grid .service-card-link article,.commercial-grid .service-card-link article{height:100%}.grid .service-card-link img,.commercial-grid .service-card-link img{display:block;width:100%;height:190px;object-fit:cover}.grid .service-card-link article h3,.commercial-grid .service-card-link article h3{margin-top:18px}.grid .service-card-link article p,.commercial-grid .service-card-link article p{margin-bottom:0}';
-    document.head.appendChild(s);
-  }
-
-  async function init(){
-    if(!(location.pathname.endsWith('index.html')||location.pathname.endsWith('/')))return;
-    addStyle();
-    // The commercial section on index.html is #commercial.
-    // Each file is fetched independently. A missing file cannot replace or delete another card.
-    await Promise.all([
-      loadCards('#services',domestic),
-      loadCards('#commercial',commercial)
-    ]);
-  }
+  const domestic=[['Garden Maintenance','garden-maintenance.html'],['Planting & Borders','planting-borders.html'],['Seasonal Tidy-Ups','seasonal-tidy-ups.html'],['Hedge Work — One of Our Specialities','hedge-work.html'],['Lawn Care','lawn-care.html'],['Snow Clearing & Salt Spreading','snow-clearing-salt-spreading.html'],['Aquatics & Water Features','aquatics-water-features.html']];
+  const commercial=[['Office & Business Grounds','office-business-grounds.html'],['Industrial Sites','industrial-sites.html'],['Car Parks & Communal Areas','car-parks-communal-areas.html'],['Autumn & Winter Grounds Work','autumn-winter-grounds-work.html']];
+  async function getCard(file){const r=await fetch('./main-cards/'+file+'?v=20260831c',{cache:'no-store'});if(!r.ok)throw new Error(file);const h=document.createElement('div');h.innerHTML=(await r.text()).trim();const a=h.querySelector('article[data-main-card]');if(!a)throw new Error(file);const l=a.closest('a');if(l){l.className='service-card-link';const t=l.getAttribute('href');if(t)l.href=t.replace(/^\.\.\//,'');l.innerHTML=a.outerHTML;return l}return a}
+  function findExisting(g,title,key){return [...g.children].find(e=>e.matches('[data-main-card="'+key+'"],.service-card-link:has([data-main-card="'+key+'"])')||e.querySelector?.('[data-main-card="'+key+'"]')||e.querySelector?.('h3')?.textContent.trim()===title)}
+  async function loadCards(sel,items){const s=document.querySelector(sel);if(!s)return;const g=s.querySelector('.grid,.commercial-grid');if(!g)return;for(const [title,file] of items){try{const n=await getCard(file),o=findExisting(g,title,file.replace(/\.html$/,''));if(o)o.replaceWith(n);else g.appendChild(n)}catch(e){console.warn('MMS card load failed',file,e)}}}
+  function addStyle(){if(document.getElementById('mms-independent-card-style'))return;const s=document.createElement('style');s.id='mms-independent-card-style';s.textContent='.service-card-link{display:flex;flex-direction:column;background:#fff;border:1px solid #dce3dc;border-radius:20px;overflow:hidden;text-decoration:none;box-shadow:0 5px 20px rgba(0,0,0,.04);height:100%}.service-card-link article{height:100%}.service-card-link img{display:block;width:100%;height:165px;object-fit:cover}.service-card-link article h3{margin:18px 22px 8px}.service-card-link article p{margin:0 22px 22px;color:#62736b}@media(max-width:700px){.service-card-link img{height:200px}}';document.head.appendChild(s)}
+  async function init(){if(!(location.pathname.endsWith('index.html')||location.pathname.endsWith('/')))return;addStyle();await Promise.all([loadCards('#services',domestic),loadCards('#commercial',commercial)])}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
