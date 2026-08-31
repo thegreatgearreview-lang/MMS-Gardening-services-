@@ -19,7 +19,7 @@
   ];
 
   async function getCard(file){
-    const r=await fetch('./main-cards/'+file+'?v=independent-20260828',{cache:'no-store'});
+    const r=await fetch('./main-cards/'+file+'?v=independent-20260831',{cache:'no-store'});
     if(!r.ok)throw new Error('Card file unavailable: '+file);
     const holder=document.createElement('div');
     holder.innerHTML=(await r.text()).trim();
@@ -69,10 +69,11 @@
   async function init(){
     if(!(location.pathname.endsWith('index.html')||location.pathname.endsWith('/')))return;
     addStyle();
+    // The commercial section on index.html is #commercial.
     // Each file is fetched independently. A missing file cannot replace or delete another card.
     await Promise.all([
       loadCards('#services',domestic),
-      loadCards('#commercial-services',commercial)
+      loadCards('#commercial',commercial)
     ]);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
