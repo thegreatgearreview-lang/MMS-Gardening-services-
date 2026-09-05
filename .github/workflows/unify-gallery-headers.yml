@@ -1,0 +1,47 @@
+name: Unify gallery headers
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  unify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply common MMS header
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          pages = [
+            'aquatics-water-features.html','car-parks-communal-areas.html','churches-graveyards.html',
+            'garden-maintenance.html','hedge-work.html','industrial-sites.html','lawn-care.html',
+            'office-business-grounds.html','planting-borders.html','seasonal-tidy-ups.html',
+            'snow-clearing-salt-spreading.html'
+          ]
+          for name in pages:
+            p=Path(name)
+            if not p.exists():
+              continue
+            s=p.read_text(encoding='utf-8')
+            s=re.sub(r'<header(?:\\s[^>]*)?>.*?</header>', '<header class="site-header"></header>', s, count=1, flags=re.S)
+            if 'src="header-loader.js"' not in s:
+              s=s.replace('</body>', '<script src="header-loader.js"></script></body>')
+            p.write_text(s,encoding='utf-8')
+          p=Path('header-loader.js')
+          s=p.read_text(encoding='utf-8')
+          if "const prefix=" not in s:
+            s=s.replace("const header=document.createElement('header');", "const header=document.createElement('header');\n    const prefix=(location.pathname.endsWith('/index.html')||location.pathname.endsWith('/'))?'':'index.html';")
+            s=s.replace('href=\"#home\"','href=\"${prefix}#home\"')
+            s=s.replace('href=\"#services\"','href=\"${prefix}#services\"')
+            s=s.replace('href=\"#commercial\"','href=\"${prefix}#commercial\"')
+            s=s.replace('href=\"#nursery\"','href=\"${prefix}#nursery\"')
+            s=s.replace('href=\"#contact\"','href=\"${prefix}#contact\"')
+          p.write_text(s,encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'Use consistent main header across gallery pages'
+          git push
