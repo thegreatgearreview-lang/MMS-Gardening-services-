@@ -50,12 +50,14 @@
     let b=normalise(read());
     if(!b.length){el.innerHTML='<div class="basket-empty"><p>Your basket is empty.</p><a class="btn" href="nursery.html">Browse the Nursery</a></div>';updateCounts();return}
     write(b);
-    el.innerHTML=b.map((x,i)=>`<div class="basket-row"><div class="basket-item-info"><strong>${esc(x.name)}</strong><br><span>${esc(x.category||'Nursery')} · ${esc(x.price)}</span></div><div class="basket-item-controls"><label>Qty <input class="basket-qty" type="number" min="1" step="1" value="${x.quantity}" inputmode="numeric" aria-label="Quantity ${esc(x.name)}" onchange="updateBasketQuantity(${i},this.value)"></label><button class="remove" onclick="removeItem(${i})">Remove</button></div></div>`).join('')+'<div class="basket-actions"><button class="btn" onclick="sendOrder()">Send basket order</button><a class="btn light" href="nursery.html">Continue shopping</a></div>';
+    el.innerHTML=b.map((x,i)=>`<div class="basket-row"><div class="basket-item-info"><strong>${esc(x.name)}</strong><br><span>${esc(x.category||'Nursery')} · ${esc(x.price)}</span></div><div class="basket-item-controls"><label>Qty <input class="basket-qty" type="number" min="0" step="1" value="${x.quantity}" inputmode="numeric" aria-label="Quantity ${esc(x.name)}" onchange="updateBasketQuantity(${i},this.value)" oninput="updateBasketQuantity(${i},this.value)"></label><button class="remove" onclick="removeItem(${i})">Remove</button></div></div>`).join('')+'<div class="basket-actions"><button class="btn" onclick="sendOrder()">Send basket order</button><a class="btn light" href="nursery.html">Continue shopping</a></div>';
     updateCounts();
   }
   window.updateBasketQuantity=function(i,value){
-    const b=normalise(read()); const q=Math.max(1,parseInt(value,10)||1);
-    if(!b[i])return; b[i].quantity=q; write(b); renderBasket();
+    const b=normalise(read()); const q=Math.max(0,parseInt(value,10)||0);
+    if(!b[i])return;
+    if(q===0){b.splice(i,1)}else{b[i].quantity=q}
+    write(b); renderBasket();
   };
   window.removeItem=function(i){const b=normalise(read());b.splice(i,1);write(b);renderBasket()};
   window.sendOrder=function(){
