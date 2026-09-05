@@ -1,0 +1,95 @@
+// MMS independent header
+// Edit this file for future header wording, layout or navigation changes only.
+(function(){
+  function init(){
+    const old=document.querySelector('header.site-header');
+    if(!old)return;
+
+    const header=document.createElement('header');
+    header.className='mms-header';
+    header.innerHTML=`
+      <div class="mms-header-inner">
+        <a class="mms-header-logo" href="#home" aria-label="MMS Gardening Services"></a>
+        <div class="mms-header-services">Grounds Maintenance</div>
+        <div class="mms-header-contact">
+          <div class="mms-header-location">Nottingham</div>
+          <a class="mms-header-phone" href="tel:07989892662">07989 892662</a>
+          <div class="mms-header-tagline">Helping each other grow</div>
+        </div>
+        <nav class="mms-header-nav" aria-label="Main navigation">
+          <a href="#services">Domestic</a>
+          <a href="#commercial">Commercial</a>
+          <a href="#nursery">The Nursery</a>
+          <a href="#contact">Get a Quote</a>
+        </nav>
+        <button class="mms-header-menu" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+      <nav class="mms-mobile-nav" aria-label="Mobile navigation">
+        <a href="#services">Domestic</a>
+        <a href="#commercial">Commercial</a>
+        <a href="#nursery">The Nursery</a>
+        <a href="#contact">Get a Quote</a>
+      </nav>`;
+
+    const style=document.createElement('style');
+    style.id='mms-independent-header-style';
+    style.textContent=`
+      .mms-header{position:sticky;top:0;z-index:50;background:rgba(255,253,248,.98);border-bottom:1px solid #dce3dc}
+      .mms-header-inner{width:min(1120px,92%);min-height:105px;margin:auto;display:grid;grid-template-columns:125px minmax(220px,1fr) auto;align-items:center;column-gap:28px;position:relative}
+      .mms-header-logo{width:125px;height:52px;display:block;background:url('images/mms-logo-master.svg') center/contain no-repeat}
+      .mms-header-services{position:absolute;left:0;top:72px;font-size:13px;font-weight:800;color:#245b3a;white-space:nowrap}
+      .mms-header-contact{text-align:center;color:#245b3a;white-space:nowrap;line-height:1.2}
+      .mms-header-location{display:inline;font-size:15px;font-weight:800}
+      .mms-header-location:after{content:' · ';font-weight:800}
+      .mms-header-phone{font-size:15px;font-weight:900;color:#245b3a;text-decoration:none}
+      .mms-header-phone:hover{text-decoration:underline}
+      .mms-header-tagline{margin-top:5px;font:600 13px Georgia,serif;font-style:italic;letter-spacing:.02em}
+      .mms-header-nav{display:flex;gap:15px;align-items:center;justify-content:flex-end;font-size:13px;font-weight:800;white-space:nowrap}
+      .mms-header-nav a{text-decoration:none}
+      .mms-header-nav a:hover{text-decoration:underline}
+      .mms-header-menu,.mms-mobile-nav{display:none}
+      @media(max-width:1000px){
+        .mms-header-inner{grid-template-columns:120px minmax(190px,1fr) auto;column-gap:18px}
+        .mms-header-logo{width:120px;height:54px}
+        .mms-header-nav{gap:10px;font-size:12px}
+        .mms-header-location,.mms-header-phone{font-size:13px}
+        .mms-header-tagline{font-size:12px}
+      }
+      @media(max-width:700px){
+        .mms-header-inner{width:92%;min-height:105px;display:flex;align-items:center;gap:9px}
+        .mms-header-logo{width:105px;height:50px;flex:0 0 105px}
+        .mms-header-services{left:0;top:68px;font-size:11px}
+        .mms-header-contact{min-width:0;text-align:left;line-height:1.15}
+        .mms-header-location,.mms-header-phone{font-size:10px}
+        .mms-header-tagline{font-size:10px;margin-top:4px}
+        .mms-header-nav{display:none}
+        .mms-header-menu{display:block;margin-left:auto;border:0;background:none;color:#245b3a;font-size:26px;line-height:1;cursor:pointer;padding:5px}
+        .mms-mobile-nav{position:absolute;display:none;top:105px;left:0;right:0;background:#fffdf8;border-bottom:1px solid #dce3dc;padding:18px 5%;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+        .mms-mobile-nav.open{display:flex;flex-direction:column;gap:14px}
+        .mms-mobile-nav a{font-weight:800;text-decoration:none}
+      }
+      @media(max-width:520px){
+        .mms-header-inner{gap:7px}
+        .mms-header-logo{width:100px;height:48px;flex-basis:100px}
+        .mms-header-services{top:60px;font-size:9px}
+        .mms-header-location,.mms-header-phone{font-size:9px}
+        .mms-header-tagline{font-size:9px}
+      }`;
+    document.head.appendChild(style);
+    old.replaceWith(header);
+
+    const menu=header.querySelector('.mms-header-menu');
+    const mobile=header.querySelector('.mms-mobile-nav');
+    menu.addEventListener('click',()=>{
+      const open=mobile.classList.toggle('open');
+      menu.setAttribute('aria-expanded',open?'true':'false');
+      menu.setAttribute('aria-label',open?'Close menu':'Open menu');
+    });
+    mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+      mobile.classList.remove('open');
+      menu.setAttribute('aria-expanded','false');
+      menu.setAttribute('aria-label','Open menu');
+    }));
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
