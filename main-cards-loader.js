@@ -2,6 +2,7 @@
 // FUTURE CARD IMAGE CHANGES: edit the matching file in /main-cards/ (NOT the full service page).
 // For Garden Maintenance specifically: /main-cards/garden-maintenance.html
 // After changing a card image, bump the ?v=YYYYMMDDx value below to force the live homepage to fetch the new card.
+// Nursery label alignment refresh: 20260905b
 (function(){
   const domestic=[['Garden Maintenance','garden-maintenance.html'],['Hedge Work — One of Our Specialities','hedge-work.html'],['Lawn Care','lawn-care.html'],['Snow Clearing & Salt Spreading','snow-clearing-salt-spreading.html'],['Aquatics & Water Features','aquatics-water-features.html']];
   const commercial=[['Office & Business Grounds','office-business-grounds.html'],['Industrial Sites','industrial-sites.html'],['Car Parks & Communal Areas','car-parks-communal-areas.html']];
