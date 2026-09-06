@@ -10,10 +10,10 @@
   function basketTotal(b){return normalise(b).reduce((n,x)=>n+(priceNumber(x.price)*x.quantity),0)}
   function updateCounts(){const n=total(read());document.querySelectorAll('#basket-count').forEach(e=>e.textContent=n)}
   function esc(s){return String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]))}
+  function feedback(button){if(!button)return;button.classList.remove('basket-added');void button.offsetWidth;button.classList.add('basket-added');const old=button.textContent;button.textContent='✓ Added';setTimeout(()=>{button.textContent=old;button.classList.remove('basket-added')},650);if(typeof navigator.vibrate==='function')navigator.vibrate(45)}
   function ensureQtyFields(){document.querySelectorAll('.plant-buy,.buy').forEach(box=>{const button=box.querySelector('button');if(!button||!/basket/i.test(button.textContent)||box.querySelector('.qty'))return;const input=document.createElement('input');input.className='qty';input.type='number';input.min='1';input.step='1';input.value='1';input.inputMode='numeric';const card=box.closest('.plant-card,.product-card');const name=card?.querySelector('h2,h3')?.textContent?.trim()||'plant';input.setAttribute('aria-label','Quantity '+name);box.insertBefore(input,button)})}
-  function add(name,price,category,button){const card=button?.closest('.plant-card,.product-card,.size');const input=card?.querySelector('.qty');const quantity=Math.max(1,parseInt(input?.value||'1',10)||1);const b=normalise(read());const k=key({name,price,category});const item=b.find(x=>key(x)===k);if(item)item.quantity+=quantity;else b.push({name,price,category:category||'Nursery',quantity});write(b);updateCounts();if(button){const old=button.textContent;button.textContent='✓ Added';setTimeout(()=>button.textContent=old,1200)}}
+  function add(name,price,category,button){const card=button?.closest('.plant-card,.product-card,.size');const input=card?.querySelector('.qty');const quantity=Math.max(1,parseInt(input?.value||'1',10)||1);const b=normalise(read());const k=key({name,price,category});const item=b.find(x=>key(x)===k);if(item)item.quantity+=quantity;else b.push({name,price,category:category||'Nursery',quantity});write(b);updateCounts();feedback(button)}
   window.addToBasket=add;window.add=add;
-  // Keep older nursery pages on the same basket engine while they are being refreshed.
   window.addPlant=add;
   window.addAnnabelle=add;
   window.updateBasketCount=updateCounts;
