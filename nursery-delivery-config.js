@@ -40,13 +40,22 @@ window.MMS_NURSERY_DELIVERY = {
   },
 
   // INTERNAL delivery classes, not customer-facing postage prices.
-  // The weight bands are planning bands only; actual account rates replace them later.
+  // Planning weight bands only; actual account rates replace them later.
   weightBands: [
     { id: 'PF_0_5KG', maxWeightKg: 5, label: 'Up to 5kg' },
     { id: 'PF_5_10KG', maxWeightKg: 10, label: '5kg to 10kg' },
     { id: 'PF_10_20KG', maxWeightKg: 20, label: '10kg to 20kg' },
     { id: 'PF_20_30KG', maxWeightKg: 30, label: '20kg to 30kg' }
   ],
+
+  // Current planning defaults requested for MMS.
+  // These are weight-band assignments, not live postage prices.
+  categoryDefaults: {
+    defaultPlant: 'PF_0_5KG',
+    shrubs: 'PF_5_10KG',
+    grasses: 'PF_5_10KG',
+    trees: 'PF_5_10KG'
+  },
 
   // Public Parcelforce retail guide reference effective 5 October 2026.
   // These are NOT live MMS customer prices and are NOT assumed to be the future
@@ -71,30 +80,34 @@ window.MMS_NURSERY_DELIVERY = {
       packedLengthCm: null,
       packedWidthCm: null,
       packedHeightCm: null,
+      plannedWeightBand: 'PF_0_5KG',
       status: 'measure-and-test'
     },
     PLANT_10_15L: {
-      description: 'Medium plant / 10–15L pot',
+      description: 'Shrub / grass / plant in 10–15L pot',
       packedWeightKg: null,
       packedLengthCm: null,
       packedWidthCm: null,
       packedHeightCm: null,
+      plannedWeightBand: 'PF_5_10KG',
       status: 'measure-and-test'
     },
     PLANT_15_25L: {
-      description: 'Large plant / 15–25L pot',
+      description: 'Larger shrub / tree / plant in 15–25L pot',
       packedWeightKg: null,
       packedLengthCm: null,
       packedWidthCm: null,
       packedHeightCm: null,
+      plannedWeightBand: 'PF_5_10KG',
       status: 'measure-and-test'
     },
     BULKY_PLANT: {
-      description: 'Tall / bulky plant requiring special packing or local delivery',
+      description: 'Tall / bulky plant requiring special packing',
       packedWeightKg: null,
       packedLengthCm: null,
       packedWidthCm: null,
       packedHeightCm: null,
+      plannedWeightBand: 'PF_10_20KG',
       status: 'measure-and-test'
     },
     LOGS_OR_HEAVY: {
@@ -103,23 +116,25 @@ window.MMS_NURSERY_DELIVERY = {
       packedLengthCm: null,
       packedWidthCm: null,
       packedHeightCm: null,
+      plannedWeightBand: 'PF_20_30KG',
       status: 'measure-and-test'
     }
   },
 
   products: {
-    'Laurel 2ft': { page: 'laurel.html', pot: '2L', deliveryClass: 'PLANT_2L' },
-    'Laurel 4ft': { page: 'laurel.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L' },
-    'Laurel 5ft': { page: 'laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L' },
-    'Privet 2ft': { page: 'privet.html', pot: '2L', deliveryClass: 'PLANT_2L' },
-    'Privet 4ft': { page: 'privet.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L' },
-    'Privet 5ft': { page: 'privet.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L' },
-    'Portuguese Laurel 2ft': { page: 'portuguese-laurel.html', pot: '2L', deliveryClass: 'PLANT_2L' },
-    'Portuguese Laurel 4ft': { page: 'portuguese-laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L' },
-    'Portuguese Laurel 5ft': { page: 'portuguese-laurel.html', pot: '20–25L', deliveryClass: 'PLANT_15_25L' },
-    'Carex Japanese Sedge': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L' },
-    'Black Mondo Grass': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L' },
-    'Carex Frosted Curls': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L' }
+    'Laurel 2ft': { page: 'laurel.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Laurel 4ft': { page: 'laurel.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L', plannedWeightBand: 'PF_5_10KG' },
+    'Laurel 5ft': { page: 'laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
+    'Privet 2ft': { page: 'privet.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Privet 4ft': { page: 'privet.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L', plannedWeightBand: 'PF_5_10KG' },
+    'Privet 5ft': { page: 'privet.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
+    'Portuguese Laurel 2ft': { page: 'portuguese-laurel.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Portuguese Laurel 4ft': { page: 'portuguese-laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
+    'Portuguese Laurel 5ft': { page: 'portuguese-laurel.html', pot: '20–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
+    'Carex Japanese Sedge': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Black Mondo Grass': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Carex Frosted Curls': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Brown Turkey Fig Tree': { page: 'trees.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' }
   },
 
   carrierRates: {},
