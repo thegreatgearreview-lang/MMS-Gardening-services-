@@ -8,7 +8,8 @@
   function priceNumber(value){const m=String(value||'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0}
   function money(n){return '£'+n.toFixed(2)}
   function basketTotal(b){return normalise(b).reduce((n,x)=>n+(priceNumber(x.price)*x.quantity),0)}
-  function updateCounts(){const n=total(read());document.querySelectorAll('#basket-count').forEach(e=>e.textContent=n)}
+  function ensureHomeMenuCount(){if(!(location.pathname==='/'||location.pathname.endsWith('/index.html')))return;const menu=document.getElementById('mobileMenu');if(!menu||menu.querySelector('#basket-count'))return;const count=document.createElement('span');count.id='basket-count';count.style.cssText='color:#d00000;font-weight:900;font-size:18px;margin-left:5px;vertical-align:2px';menu.appendChild(count)}
+  function updateCounts(){ensureHomeMenuCount();const n=total(read());document.querySelectorAll('#basket-count').forEach(e=>e.textContent=n)}
   function esc(s){return String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]))}
   function addPressStyle(){if(document.getElementById('basket-feedback-style'))return;const s=document.createElement('style');s.id='basket-feedback-style';s.textContent='.basket-pressed{transform:scale(.97)!important;filter:brightness(.9)!important;transition:transform .06s ease,filter .06s ease!important}.basket-added{transition:transform .08s ease,filter .08s ease!important}';document.head.appendChild(s)}
   function pressFeedback(button){if(!button)return;button.classList.add('basket-pressed');setTimeout(()=>button.classList.remove('basket-pressed'),120);if(typeof navigator.vibrate==='function')navigator.vibrate(35)}
