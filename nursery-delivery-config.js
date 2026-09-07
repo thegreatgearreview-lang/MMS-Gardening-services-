@@ -15,8 +15,8 @@ window.MMS_NURSERY_DELIVERY = {
   targetDeliveryHours: 48,
 
   carrier: {
-    preferred: 'royal-mail-tracked-24',
-    heavyBulkyFallback: 'parcelforce-express24',
+    preferred: 'parcelforce-express24',
+    heavyBulkyFallback: 'parcelforce-express48large',
     excluded: ['evri', 'dpd', 'dhl'],
     status: 'account-and-quote-required'
   },
@@ -40,6 +40,30 @@ window.MMS_NURSERY_DELIVERY = {
   },
 
   // INTERNAL delivery classes, not customer-facing postage prices.
+  // The weight bands are planning bands only; actual account rates replace them later.
+  weightBands: [
+    { id: 'PF_0_5KG', maxWeightKg: 5, label: 'Up to 5kg' },
+    { id: 'PF_5_10KG', maxWeightKg: 10, label: '5kg to 10kg' },
+    { id: 'PF_10_20KG', maxWeightKg: 20, label: '10kg to 20kg' },
+    { id: 'PF_20_30KG', maxWeightKg: 30, label: '20kg to 30kg' }
+  ],
+
+  // Public Parcelforce retail guide reference effective 5 October 2026.
+  // These are NOT live MMS customer prices and are NOT assumed to be the future
+  // business-account rates. They give us the correct band structure now.
+  planningRetailReference: {
+    service: 'express24',
+    effectiveFrom: '2026-10-05',
+    currency: 'GBP',
+    ratesIncVat: {
+      'PF_0_5KG': 12.50,
+      'PF_5_10KG': 16.15,
+      'PF_10_20KG': 20.20,
+      'PF_20_30KG': 24.85
+    },
+    note: 'Planning reference only. Replace with MMS business-account rates before go-live.'
+  },
+
   classes: {
     PLANT_2L: {
       description: 'Small established plant / 2L pot',
@@ -83,8 +107,6 @@ window.MMS_NURSERY_DELIVERY = {
     }
   },
 
-  // Product mapping is deliberately kept separate from prices.
-  // The basket can use this mapping to flag any unmapped product before go-live.
   products: {
     'Laurel 2ft': { page: 'laurel.html', pot: '2L', deliveryClass: 'PLANT_2L' },
     'Laurel 4ft': { page: 'laurel.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L' },
@@ -100,7 +122,6 @@ window.MMS_NURSERY_DELIVERY = {
     'Carex Frosted Curls': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L' }
   },
 
-  // Deliberately blank until MMS has the actual packed measurements and account quote.
   carrierRates: {},
   postcodeSurcharges: {},
   packingCostPence: null,
