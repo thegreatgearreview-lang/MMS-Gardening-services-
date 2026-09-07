@@ -1,27 +1,43 @@
 /*
  * MMS NURSERY DELIVERY PLAN
  *
- * This file is deliberately NOT loaded by the live basket yet.
- * It is the single source of truth we can wire into basket-quantity.js
- * once the physical packed weights/dimensions and final carrier are confirmed.
+ * Single source of truth for future nursery delivery pricing.
+ * This remains OFF until MMS has confirmed packed weights/dimensions and
+ * received the final carrier/account rates.
  *
  * IMPORTANT: Never price postage from plant height or pot volume alone.
- * We need the ACTUAL packed parcel weight + dimensions for each delivery class.
+ * We need the ACTUAL packed parcel weight + dimensions for each class.
  */
 window.MMS_NURSERY_DELIVERY = {
   live: false,
   currency: 'GBP',
   market: 'UK-mainland',
+  targetDeliveryHours: 48,
 
-  // Royal Mail explicitly supports plants, seeds and bulbs in its gardening/DIY
-  // delivery guidance. Current public online prices are only benchmarks;
-  // business/account rates must be confirmed before publishing checkout prices.
-  preferredCarrier: 'royal-mail',
-  alternativeCarriers: ['royal-mail-business', 'local-courier'],
-  evriStatus: 'not-preferred-for-plants',
+  carrier: {
+    preferred: 'royal-mail-tracked-24',
+    heavyBulkyFallback: 'parcelforce-express24',
+    excluded: ['evri', 'dpd', 'dhl'],
+    status: 'account-and-quote-required'
+  },
 
-  // These are INTERNAL delivery classes, not customer-facing postage prices.
-  // Each class stays blocked until packed measurements have been recorded.
+  collection: {
+    preferred: 'scheduled-business-collection',
+    weekdayPreferred: true,
+    launchDay: 'Friday',
+    customerCollectionChargePence: null,
+    businessCollectionChargePence: null,
+    status: 'confirm-business-account-terms'
+  },
+
+  account: {
+    type: 'business-parcels-account',
+    creditBilling: true,
+    paymentFrequency: 'confirm-with-account',
+    status: 'not-open-yet'
+  },
+
+  // INTERNAL delivery classes, not customer-facing postage prices.
   classes: {
     PLANT_2L: {
       description: 'Small established plant / 2L pot',
@@ -65,8 +81,8 @@ window.MMS_NURSERY_DELIVERY = {
     }
   },
 
-  // Current plant data audit. Product pages should reference one of the
-  // internal classes above; no postage price is assigned here yet.
+  // Product mapping is deliberately kept separate from prices.
+  // The basket can use this mapping to flag any unmapped product before go-live.
   products: {
     'Laurel 2ft': { page: 'laurel.html', pot: '2L', deliveryClass: 'PLANT_2L' },
     'Laurel 4ft': { page: 'laurel.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L' },
@@ -82,7 +98,7 @@ window.MMS_NURSERY_DELIVERY = {
     'Carex Frosted Curls': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L' }
   },
 
-  // These are deliberately blank until the physical packing test is done.
+  // Deliberately blank until MMS has the actual packed measurements and account quote.
   carrierRates: {},
   postcodeSurcharges: {},
   packingCostPence: null,
@@ -95,6 +111,10 @@ window.MMS_NURSERY_DELIVERY = {
     keepPostageSeparateFromPlantPrice: true,
     showPostageBeforePayment: true,
     requireCustomerAddressBeforeFinalPostage: true,
-    recheckCarrierRatesBeforeGoLive: true
+    maximumCustomerDeliveryWindowHours: 48,
+    recheckCarrierRatesBeforeGoLive: true,
+    doNotGoLiveUntilAllProductsMapped: true,
+    doNotGoLiveUntilAllDeliveryClassesMeasured: true,
+    doNotGoLiveUntilAccountRatesConfirmed: true
   }
 };
