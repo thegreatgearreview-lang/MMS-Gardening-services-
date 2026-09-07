@@ -51,8 +51,8 @@ window.MMS_NURSERY_DELIVERY = {
     bareRootHedging4to5ft: {
       deliveryClass: 'PF_0_5KG',
       parcelPricePence: 1750,
-      maxPlantsPerParcel: 5,
-      description: 'Up to 5 compatible 4–5ft bare-root hedging plants per £17.50 parcel'
+      maxPlantsPerParcel: 4,
+      description: 'Up to 4 compatible 4–5ft bare-root hedging plants per £17.50 parcel; the fifth-plant capacity is deliberately reserved as weight contingency'
     }
   },
   planningRetailReference: {
