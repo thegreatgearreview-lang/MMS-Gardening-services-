@@ -80,7 +80,7 @@ window.MMS_NURSERY_DELIVERY = {
     'Laurel 5ft': { page: 'laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
     'Privet 2ft': { page: 'privet.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
     'Privet 4ft': { page: 'privet.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L', plannedWeightBand: 'PF_0_5KG' },
-    'Privet 5ft': { page: 'privet.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
+    'Privet 5ft': { page: 'privet.html', pot: '15–25L', deliveryClass: 'PLANT_15_25KG', plannedWeightBand: 'PF_5_10KG' },
     'Portuguese Laurel 2ft': { page: 'portuguese-laurel.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
     'Portuguese Laurel 4ft': { page: 'portuguese-laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
     'Portuguese Laurel 5ft': { page: 'portuguese-laurel.html', pot: '20–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
