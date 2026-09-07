@@ -25,8 +25,10 @@ window.MMS_NURSERY_DELIVERY = {
     preferred: 'scheduled-business-collection',
     weekdayPreferred: true,
     launchDay: 'Friday',
-    customerCollectionChargePence: null,
+    clickAndDropFallbackChargePencePerItem: 30,
     businessCollectionChargePence: null,
+    royalMailBusinessFreeCollectionThresholdPencePerYear: 2000000,
+    parcelforceFreeCollectionThresholdItemsPerYear: 750,
     status: 'confirm-business-account-terms'
   },
 
