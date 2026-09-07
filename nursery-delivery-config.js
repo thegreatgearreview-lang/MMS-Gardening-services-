@@ -49,11 +49,13 @@ window.MMS_NURSERY_DELIVERY = {
   ],
 
   // Current planning defaults requested for MMS.
-  // These are weight-band assignments, not live postage prices.
+  // All plants, including shrubs, grasses and roses, are planned at up to 5kg.
+  // Trees are planned at 5–10kg.
   categoryDefaults: {
     defaultPlant: 'PF_0_5KG',
-    shrubs: 'PF_5_10KG',
-    grasses: 'PF_5_10KG',
+    shrubs: 'PF_0_5KG',
+    grasses: 'PF_0_5KG',
+    roses: 'PF_0_5KG',
     trees: 'PF_5_10KG'
   },
 
@@ -89,7 +91,7 @@ window.MMS_NURSERY_DELIVERY = {
       packedLengthCm: null,
       packedWidthCm: null,
       packedHeightCm: null,
-      plannedWeightBand: 'PF_5_10KG',
+      plannedWeightBand: 'PF_0_5KG',
       status: 'measure-and-test'
     },
     PLANT_15_25L: {
@@ -122,18 +124,18 @@ window.MMS_NURSERY_DELIVERY = {
   },
 
   products: {
-    'Laurel 2ft': { page: 'laurel.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
-    'Laurel 4ft': { page: 'laurel.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L', plannedWeightBand: 'PF_5_10KG' },
+    'Laurel 2ft': { page: 'laurel.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
+    'Laurel 4ft': { page: 'laurel.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L', plannedWeightBand: 'PF_0_5KG' },
     'Laurel 5ft': { page: 'laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
-    'Privet 2ft': { page: 'privet.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
-    'Privet 4ft': { page: 'privet.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L', plannedWeightBand: 'PF_5_10KG' },
+    'Privet 2ft': { page: 'privet.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
+    'Privet 4ft': { page: 'privet.html', pot: '10–15L', deliveryClass: 'PLANT_10_15L', plannedWeightBand: 'PF_0_5KG' },
     'Privet 5ft': { page: 'privet.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
-    'Portuguese Laurel 2ft': { page: 'portuguese-laurel.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Portuguese Laurel 2ft': { page: 'portuguese-laurel.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
     'Portuguese Laurel 4ft': { page: 'portuguese-laurel.html', pot: '15–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
     'Portuguese Laurel 5ft': { page: 'portuguese-laurel.html', pot: '20–25L', deliveryClass: 'PLANT_15_25L', plannedWeightBand: 'PF_5_10KG' },
-    'Carex Japanese Sedge': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
-    'Black Mondo Grass': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
-    'Carex Frosted Curls': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' },
+    'Carex Japanese Sedge': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
+    'Black Mondo Grass': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
+    'Carex Frosted Curls': { page: 'grasses.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_0_5KG' },
     'Brown Turkey Fig Tree': { page: 'trees.html', pot: '2L', deliveryClass: 'PLANT_2L', plannedWeightBand: 'PF_5_10KG' }
   },
 
