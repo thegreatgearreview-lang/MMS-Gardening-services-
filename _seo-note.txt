@@ -1,1 +1,0 @@
-Nursery product SEO pages added for individual plant discovery. Google can crawl these URLs via internal links and sitemap. Product structured data is included in the initial HTML.
