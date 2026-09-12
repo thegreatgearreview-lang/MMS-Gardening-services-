@@ -17,7 +17,7 @@
       const input=document.getElementById('garden-discount-code'); input.addEventListener('keydown',e=>{if(e.key==='Enter')apply()});
     }
     const saved=localStorage.getItem(KEY)==='true';
-    if(saved){document.getElementById('garden-discount-code').value=CODE;showApplied()}
+    if(saved){document.getElementById('garden-discount-code').value='';}
   }
   function apply(){const input=document.getElementById('garden-discount-code'),status=document.getElementById('garden-discount-status');if(String(input.value||'').trim().toUpperCase()!==CODE){status.textContent='That code is not recognised.';return}localStorage.setItem(KEY,'true');showApplied()}
   function showApplied(){const el=document.getElementById('basket');if(!el)return;const old=el.querySelector('#garden-discount-total');if(old)old.remove();const t=total(),discount=t*.10,newTotal=t-discount;const totalBox=el.querySelector('.basket-total');if(totalBox){totalBox.innerHTML='<strong>Subtotal: '+money(t)+'</strong><div id="garden-discount-total" style="margin-top:6px;color:#2f6b46"><strong>Garden Club discount (10%): −'+money(discount)+'</strong><br><strong style="font-size:18px">Total: '+money(newTotal)+'</strong></div>'}const status=document.getElementById('garden-discount-status');if(status)status.textContent='Garden Club discount applied ✓'}
