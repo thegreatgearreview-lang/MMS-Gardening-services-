@@ -8,7 +8,10 @@
     const hero=document.querySelector('main .hero');
     if(hero) hero.insertAdjacentElement('afterend',wrap); else {const nursery=document.querySelector('main');if(nursery) nursery.prepend(wrap);else document.body.appendChild(wrap)}
     const join=wrap.querySelector('#garden-club-join'),form=wrap.querySelector('form'),status=wrap.querySelector('.garden-club-status');
-    join.addEventListener('click',function(){join.style.display='none';form.style.display='grid';form.querySelector('input[name=email]').focus()});
+    const showForm=function(){join.style.display='none';form.style.display='grid';form.querySelector('input[name=email]').focus();wrap.scrollIntoView({behavior:'smooth',block:'center'})};
+    join.addEventListener('click',showForm);
+    const heroJoin=document.querySelector('.garden-club-hero-link[href="#mms-garden-club"]');
+    if(heroJoin) heroJoin.addEventListener('click',function(e){e.preventDefault();showForm()});
     form.addEventListener('submit',async function(e){e.preventDefault();status.textContent='Joining…';const data=Object.fromEntries(new FormData(form).entries());data.consent=form.consent.checked;try{const r=await fetch('/api/garden-club',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});const j=await r.json();if(!r.ok)throw new Error(j.error||'Could not join');localStorage.setItem('mmsGardenClub','true');localStorage.setItem('mmsGardenClubCode','GARDEN10');status.innerHTML='You’re in! 🌱 Your 10% discount code is <strong>GARDEN10</strong>. Check your email too.';form.reset()}catch(err){status.textContent=err.message}});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
