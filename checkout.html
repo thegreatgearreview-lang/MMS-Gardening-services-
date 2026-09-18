@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout | MMS Nursery</title><link rel="stylesheet" href="styles-v2.css?v=20260918-checkout">
+<style>
+.checkout-page{max-width:760px;margin:auto;padding:60px 6%}.checkout-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 6px 22px #00000010}.checkout-page h1{margin-top:8px}.checkout-page form{display:grid;gap:14px}.checkout-page label{font-weight:800;color:#245b3a}.checkout-page input{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fffdf8}.checkout-summary{margin:20px 0;padding:16px;background:#f3f7f2;border-radius:14px}.checkout-summary-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0}.checkout-total{font-size:20px;font-weight:900;border-top:1px solid var(--line);margin-top:8px;padding-top:10px}.status{min-height:24px;font-weight:800;color:#245b3a}.wallet-area{margin-top:20px}.fallback{display:block;margin-top:14px;text-align:center}.small{font-size:13px;color:var(--muted);line-height:1.5}
+</style></head><body>
+<header><nav style="width:min(1120px,92%);height:92px;margin:auto;display:flex;align-items:center;gap:12px"><a class="brand" href="index.html" aria-label="MMS Gardening Services home"></a><span style="margin:auto;color:#245b3a;font-weight:800">MMS Nursery Checkout</span><a class="btn" href="basket.html">← Basket</a></nav></header>
+<main class="checkout-page"><small>MMS NURSERY</small><h1>Checkout</h1>
+<div class="checkout-card"><div id="summary"></div>
+<form id="checkout-form"><label>First name<input name="firstName" autocomplete="given-name" required></label><label>Last name<input name="lastName" autocomplete="family-name"></label><label>Email<input name="email" type="email" autocomplete="email" required></label><p class="small">Your email is used for your MMS order confirmation after SumUp confirms payment.</p><button class="btn" type="submit">Continue to secure payment</button><div class="status" id="status" aria-live="polite"></div></form>
+<div id="wallet-area" class="wallet-area" hidden><h2>Fast checkout</h2><p class="small">Use Apple Pay or Google Pay when available on your device.</p><div id="express-checkout-container"></div><p class="small">If a wallet is not available, use the normal card checkout below.</p><a id="card-fallback" class="btn fallback" href="#">Pay securely by card</a></div>
+</div></main>
+<script src="https://js.sumup.com/swift-checkout/v1/sdk.js"></script>
+<script>
+(function(){
+const KEY='mmsBasket';
+const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
+const price=v=>{const m=String(v||'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
+const basket=read().map(x=>({...x,quantity:Math.max(1,parseInt(x.quantity,10)||1)})).filter(x=>x.name);
+const total=basket.reduce((n,x)=>n+price(x.price)*x.quantity,0);
+const summary=document.getElementById('summary'), form=document.getElementById('checkout-form'), status=document.getElementById('status'), wallet=document.getElementById('wallet-area');
+if(!basket.length||total<=0){summary.innerHTML='<p>Your basket is empty. <a href="nursery.html">Return to the nursery</a>.</p>';form.remove();return}
+summary.innerHTML='<div class="checkout-summary">'+basket.map(x=>'<div class="checkout-summary-row"><span>'+String(x.name).replace(/[&<>]/g,'')+' × '+x.quantity+'</span><strong>£'+(price(x.price)*x.quantity).toFixed(2)+'</strong></div>').join('')+'<div class="checkout-summary-row checkout-total"><span>Total</span><strong>£'+total.toFixed(2)+'</strong></div></div>';
+form.addEventListener('submit',async e=>{
+ e.preventDefault(); status.textContent='Preparing secure payment…';
+ const fd=new FormData(form), payload={firstName:fd.get('firstName'),lastName:fd.get('lastName'),email:fd.get('email'),items:basket};
+ try{
+  const r=await fetch('/api/sumup/create-checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)}); const j=await r.json(); if(!r.ok)throw new Error(j.error||'Could not start checkout');
+  wallet.hidden=false; form.querySelector('button').disabled=true; status.textContent='Secure payment ready.';
+  const publicKeyResponse=await fetch('/api/sumup/config'); const cfg=await publicKeyResponse.json(); if(!publicKeyResponse.ok)throw new Error(cfg.error||'Wallet checkout is not configured');
+  if(!window.SumUp?.SwiftCheckout)throw new Error('Fast wallet checkout is temporarily unavailable.');
+  const client=new window.SumUp.SwiftCheckout(cfg.publicKey);
+  const paymentRequest=client.paymentRequest({countryCode:'GB',locale:'en-GB',total:{label:'MMS Nursery',amount:{currency:'GBP',value:j.amount.toFixed(2)}}});
+  const buttons=client.elements({label:'buy'});
+  buttons.onSubmit(async method=>{
+    status.textContent='Opening secure payment…';
+    try{
+      const response=await paymentRequest.show(method);
+      const result=await client.processCheckout(j.checkoutId,response);
+      if(result?.status==='PAID'){localStorage.removeItem(KEY);location.href='/thankyou.html?order='+encodeURIComponent(j.orderId)}
+      else status.textContent='Payment is still being processed. Your order will be confirmed when SumUp reports it as paid.';
+    }catch(err){status.textContent=err?.message||'Payment was not completed.'}
+  });
+  paymentRequest.canMakePayment().then(ok=>{if(ok)paymentRequest.availablePaymentMethods().then(methods=>buttons.mount({paymentMethods:methods,container:document.querySelector('#express-checkout-container')}));});
+  status.textContent='Choose Apple Pay or Google Pay if available.';
+ }catch(err){status.textContent=err.message;form.querySelector('button').disabled=false}
+});
+})();
+</script></body></html>
